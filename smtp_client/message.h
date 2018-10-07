@@ -10,10 +10,18 @@
 #define message_h
 
 #include <stdio.h>
+#include "envelope.h"
 
+struct message{
+    
+    char*   id;
+    struct message_envelope* envelope;
+    char*   body;
+    
+};
 
-//create message
-//fill massage
-//free message
+struct  message* create_message();
+struct  message* fill_message(struct  message* message, char* id, struct message_envelope* envelope, char* body);
+void free_message(struct  message* message);
 
 #endif /* message_h */
