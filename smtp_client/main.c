@@ -12,11 +12,14 @@
 
 #include <stdio.h>
 #include "envelope.h"
+#include "message.h"
 
 int main(int argc, const char * argv[]) {
     // insert code here...
     struct message_envelope* envelope = create_envelope("ilya@gd.ru", "fhf@fhf.ru", "hello", "12.12");
-    printf("%s",envelope->sender);
-    free_envelope(envelope);
+    struct  message* message = create_message();
+    message = fill_message(message, "21", envelope, "Ave");
+    printf("%s\n",message->body);
+    free_message(message);
     return 0;
 }

@@ -11,6 +11,7 @@
 		3CB938FC216A0DE000AA7A65 /* message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FB216A0DE000AA7A65 /* message.c */; };
 		3CB938FF216A0E1700AA7A65 /* envelope.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FE216A0E1700AA7A65 /* envelope.c */; };
 		3CB93902216A0E3A00AA7A65 /* message_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB93901216A0E3A00AA7A65 /* message_list.c */; };
+		3CB93906216ABD1F00AA7A65 /* read_message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB93905216ABD1F00AA7A65 /* read_message.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,8 @@
 		3CB93900216A0E3A00AA7A65 /* message_list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message_list.h; sourceTree = "<group>"; };
 		3CB93901216A0E3A00AA7A65 /* message_list.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = message_list.c; sourceTree = "<group>"; };
 		3CB93903216A2AF600AA7A65 /* mail.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mail.txt; sourceTree = "<group>"; };
+		3CB93904216ABD1F00AA7A65 /* read_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = read_message.h; sourceTree = "<group>"; };
+		3CB93905216ABD1F00AA7A65 /* read_message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = read_message.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +72,8 @@
 			children = (
 				3CB938F3216A07B400AA7A65 /* main.c */,
 				3CB93900216A0E3A00AA7A65 /* message_list.h */,
+				3CB93904216ABD1F00AA7A65 /* read_message.h */,
+				3CB93905216ABD1F00AA7A65 /* read_message.c */,
 				3CB93901216A0E3A00AA7A65 /* message_list.c */,
 				3CB938FA216A0DE000AA7A65 /* message.h */,
 				3CB938FB216A0DE000AA7A65 /* message.c */,
@@ -136,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CB938F4216A07B400AA7A65 /* main.c in Sources */,
+				3CB93906216ABD1F00AA7A65 /* read_message.c in Sources */,
 				3CB938FC216A0DE000AA7A65 /* message.c in Sources */,
 				3CB938FF216A0E1700AA7A65 /* envelope.c in Sources */,
 				3CB93902216A0E3A00AA7A65 /* message_list.c in Sources */,

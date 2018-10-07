@@ -23,5 +23,6 @@ struct message{
 struct  message* create_message();
 struct  message* fill_message(struct  message* message, char* id, struct message_envelope* envelope, char* body);
 void free_message(struct  message* message);
+//на всякий случай разбить заполнеие пиьма на отдельные функции
 
 #endif /* message_h */
