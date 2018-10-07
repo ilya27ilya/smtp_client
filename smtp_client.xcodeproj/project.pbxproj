@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3CB938F4216A07B400AA7A65 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938F3216A07B400AA7A65 /* main.c */; };
+		3CB938FC216A0DE000AA7A65 /* message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FB216A0DE000AA7A65 /* message.c */; };
+		3CB938FF216A0E1700AA7A65 /* envelope.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FE216A0E1700AA7A65 /* envelope.c */; };
+		3CB93902216A0E3A00AA7A65 /* message_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB93901216A0E3A00AA7A65 /* message_list.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,12 @@
 /* Begin PBXFileReference section */
 		3CB938F0216A07B400AA7A65 /* smtp_client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smtp_client; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB938F3216A07B400AA7A65 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		3CB938FA216A0DE000AA7A65 /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
+		3CB938FB216A0DE000AA7A65 /* message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = message.c; sourceTree = "<group>"; };
+		3CB938FD216A0E1700AA7A65 /* envelope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = envelope.h; sourceTree = "<group>"; };
+		3CB938FE216A0E1700AA7A65 /* envelope.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = envelope.c; sourceTree = "<group>"; };
+		3CB93900216A0E3A00AA7A65 /* message_list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message_list.h; sourceTree = "<group>"; };
+		3CB93901216A0E3A00AA7A65 /* message_list.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = message_list.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +67,12 @@
 			isa = PBXGroup;
 			children = (
 				3CB938F3216A07B400AA7A65 /* main.c */,
+				3CB93900216A0E3A00AA7A65 /* message_list.h */,
+				3CB93901216A0E3A00AA7A65 /* message_list.c */,
+				3CB938FA216A0DE000AA7A65 /* message.h */,
+				3CB938FB216A0DE000AA7A65 /* message.c */,
+				3CB938FD216A0E1700AA7A65 /* envelope.h */,
+				3CB938FE216A0E1700AA7A65 /* envelope.c */,
 			);
 			path = smtp_client;
 			sourceTree = "<group>";
@@ -119,6 +134,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CB938F4216A07B400AA7A65 /* main.c in Sources */,
+				3CB938FC216A0DE000AA7A65 /* message.c in Sources */,
+				3CB938FF216A0E1700AA7A65 /* envelope.c in Sources */,
+				3CB93902216A0E3A00AA7A65 /* message_list.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
