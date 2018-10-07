@@ -11,4 +11,9 @@
 
 #include <stdio.h>
 
+
+//create message
+//fill massage
+//free message
+
 #endif /* message_h */

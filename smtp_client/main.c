@@ -7,6 +7,7 @@
 //
 /*
  список писем - > письмо -> нагрузка, конврет -> (отправитель, список получателей -> получателей)
+ работать с файлами только на клиенте
 */
 
 #include <stdio.h>
@@ -15,5 +16,7 @@
 int main(int argc, const char * argv[]) {
     // insert code here...
     struct message_envelope* envelope = create_envelope("ilya@gd.ru", "fhf@fhf.ru", "hello", "12.12");
+    printf("%s",envelope->sender);
+    free_envelope(envelope);
     return 0;
 }
