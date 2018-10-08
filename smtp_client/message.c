@@ -35,12 +35,24 @@ struct  message* fill_message(struct  message* message, char* id, struct message
         return NULL;
     }
     
+    message = fill_envelope(message, envelope);
+    message = fill_id(message, id);
+    message = fill_body(message, body);
+    
+    
+    return message;
+}
+
+struct  message* fill_envelope(struct  message* message,struct message_envelope* envelope){
     message->envelope = (struct message_envelope*)malloc(sizeof(envelope));
     if (!message->envelope) {
         return NULL;
     }
     message->envelope = envelope;
-    
+    return message;
+}
+
+struct  message* fill_id(struct  message* message,char* id){
     unsigned char tmp = strlen(id);
     message->id = (char*) malloc(tmp+1);
     if(!message->id){
@@ -48,17 +60,21 @@ struct  message* fill_message(struct  message* message, char* id, struct message
     }
     strcpy(message->id, id);
     message->id[tmp] = '\0';
-    
-    unsigned int btmp = strlen(body);
+    return message;
+}
+
+struct  message* fill_body(struct  message* message,char* body){
+    unsigned long btmp = strlen(body);
     message->body = (char*) malloc(btmp+1);
     if(!message->body){
         return NULL;
     }
     strcpy(message->body, body);
     message->body[btmp] = '\0';
-    
     return message;
 }
+
+
 
 void free_message(struct  message* message){
     if (message) {

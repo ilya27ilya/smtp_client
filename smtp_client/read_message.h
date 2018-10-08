@@ -10,6 +10,8 @@
 #define read_message_h
 
 #include <stdio.h>
+#include "message.h"
+#define BUFFER_SIZE 500
 
 
 //основная функция - прочитать письмо
