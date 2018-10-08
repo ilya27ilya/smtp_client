@@ -12,31 +12,12 @@
 
 #include <stdio.h>
 #include "message.h"
+#include "read_message.h"
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-//    struct message_envelope* envelope = create_envelope("ilya@gd.ru", "fhf@fhf.ru", "hello", "12.12");
-//    struct  message* message = create_message();
-//    message = fill_message(message, "21", envelope, "Ave");
-//    printf("%s\n",message->body);
-//    free_message(message);
     
-    FILE* file = fopen("/Users/mam/xcode/smtp_client/smtp_client/mail.txt", "r");
-    if(!file){
-        printf("error");
-    }
-    char tmp[100];
-    fgets(tmp, 100, file);
-    char* bd = (char*) malloc(strlen(tmp+1));
-    strcat(bd, tmp);
-
-    while(fgets(tmp, 100, file)!=NULL){
-        bd = (char*) realloc (bd, strlen(bd)+strlen(tmp+1));
-        strcat(bd, tmp);
-        //printf("%s",tmp);
-    }
-
-    printf("%s",bd);
-    free(bd);
+    struct message* message = read_message("/Users/mam/xcode/smtp_client/smtp_client/mail.txt");
+    printf("%s\n",message->envelope->receiver);
     return 0;
 }

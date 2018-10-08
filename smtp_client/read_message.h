@@ -12,10 +12,10 @@
 #include <stdio.h>
 #include "message.h"
 #define BUFFER_SIZE 500
+#define BODY_SIZE 1000
+#define ENVELOPE_SIZE 500
 
-
-//основная функция - прочитать письмо
-//прочитать тело
-//прочитать id
-//прочитать конверт
+struct message* read_message(char* filename);
+char* slice(char* str);
+char* slice_reg(char* str);
 #endif /* read_message_h */
