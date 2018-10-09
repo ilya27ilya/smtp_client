@@ -39,7 +39,6 @@ struct  message* fill_message(struct  message* message, char* id, struct message
     message = fill_id(message, id);
     message = fill_body(message, body);
     
-    
     return message;
 }
 

@@ -35,9 +35,13 @@
 		3CB938FE216A0E1700AA7A65 /* envelope.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = envelope.c; sourceTree = "<group>"; };
 		3CB93900216A0E3A00AA7A65 /* message_list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message_list.h; sourceTree = "<group>"; };
 		3CB93901216A0E3A00AA7A65 /* message_list.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = message_list.c; sourceTree = "<group>"; };
-		3CB93903216A2AF600AA7A65 /* mail.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mail.txt; sourceTree = "<group>"; };
 		3CB93904216ABD1F00AA7A65 /* read_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = read_message.h; sourceTree = "<group>"; };
 		3CB93905216ABD1F00AA7A65 /* read_message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = read_message.c; sourceTree = "<group>"; };
+		3CB93907216CA2C500AA7A65 /* 3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 3.txt; sourceTree = "<group>"; };
+		3CB93908216CA2C500AA7A65 /* 2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 2.txt; sourceTree = "<group>"; };
+		3CB93909216CA2C500AA7A65 /* 4.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 4.txt; sourceTree = "<group>"; };
+		3CB9390A216CA2C600AA7A65 /* 1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1.txt; sourceTree = "<group>"; };
+		3CB9390B216CA2C600AA7A65 /* 5.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 5.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,7 @@
 		3CB938E7216A07B400AA7A65 = {
 			isa = PBXGroup;
 			children = (
+				3CB9390C216CA2D600AA7A65 /* maildir */,
 				3CB938F2216A07B400AA7A65 /* smtp_client */,
 				3CB938F1216A07B400AA7A65 /* Products */,
 			);
@@ -72,16 +77,27 @@
 			children = (
 				3CB938F3216A07B400AA7A65 /* main.c */,
 				3CB93900216A0E3A00AA7A65 /* message_list.h */,
+				3CB93901216A0E3A00AA7A65 /* message_list.c */,
 				3CB93904216ABD1F00AA7A65 /* read_message.h */,
 				3CB93905216ABD1F00AA7A65 /* read_message.c */,
-				3CB93901216A0E3A00AA7A65 /* message_list.c */,
 				3CB938FA216A0DE000AA7A65 /* message.h */,
 				3CB938FB216A0DE000AA7A65 /* message.c */,
 				3CB938FD216A0E1700AA7A65 /* envelope.h */,
 				3CB938FE216A0E1700AA7A65 /* envelope.c */,
-				3CB93903216A2AF600AA7A65 /* mail.txt */,
 			);
 			path = smtp_client;
+			sourceTree = "<group>";
+		};
+		3CB9390C216CA2D600AA7A65 /* maildir */ = {
+			isa = PBXGroup;
+			children = (
+				3CB9390A216CA2C600AA7A65 /* 1.txt */,
+				3CB93908216CA2C500AA7A65 /* 2.txt */,
+				3CB93907216CA2C500AA7A65 /* 3.txt */,
+				3CB93909216CA2C500AA7A65 /* 4.txt */,
+				3CB9390B216CA2C600AA7A65 /* 5.txt */,
+			);
+			path = maildir;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
