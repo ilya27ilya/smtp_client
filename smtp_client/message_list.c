@@ -8,7 +8,7 @@
 
 #include "message_list.h"
 
-struct message_list* create_message_list(struct message* message){
+struct message_list* create_message_el_list(struct message* message){
     if(!message){
         return NULL;
     }
@@ -22,15 +22,35 @@ struct message_list* create_message_list(struct message* message){
     return message_list;
 }
 
-struct message_list* add_message_element(struct message_list* message_list, struct message* message){
+struct message_list* add_el_mes_list(struct message_list* message_list, struct message_list* message){
     if(!message_list){
         return NULL;
     }
     if (!message) {
         return message_list;
     }
-    struct message_list* item = create_message_list(message);
-    message_list->next = item;
-    return message_list;
+    message->next = message_list;
+    return message;
 }
+
+void free_message_list(struct message_list* list)
+{
+    if (list)
+    {
+        struct message_list* cur = NULL;
+        for (; list; list = cur)
+        {
+            cur = list->next;
+            if (list->message)
+            {
+                free_message(list->message);
+                list->message = NULL;
+            }
+            free(list);
+            list = NULL;
+        }
+        list = NULL;
+    }
+}
+
 

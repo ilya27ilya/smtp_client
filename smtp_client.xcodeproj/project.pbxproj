@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C189CD721985F9700EA8F88 /* maildir.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C189CD621985F9700EA8F88 /* maildir.c */; };
 		3CB938F4216A07B400AA7A65 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938F3216A07B400AA7A65 /* main.c */; };
 		3CB938FC216A0DE000AA7A65 /* message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FB216A0DE000AA7A65 /* message.c */; };
 		3CB938FF216A0E1700AA7A65 /* envelope.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FE216A0E1700AA7A65 /* envelope.c */; };
@@ -27,6 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C189CD521985F9700EA8F88 /* maildir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = maildir.h; sourceTree = "<group>"; };
+		3C189CD621985F9700EA8F88 /* maildir.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = maildir.c; sourceTree = "<group>"; };
 		3CB938F0216A07B400AA7A65 /* smtp_client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smtp_client; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CB938F3216A07B400AA7A65 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		3CB938FA216A0DE000AA7A65 /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
@@ -55,6 +58,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C189CD821985FE100EA8F88 /* new */ = {
+			isa = PBXGroup;
+			children = (
+				3CB9390A216CA2C600AA7A65 /* 1.txt */,
+				3CB93908216CA2C500AA7A65 /* 2.txt */,
+				3CB93907216CA2C500AA7A65 /* 3.txt */,
+				3CB93909216CA2C500AA7A65 /* 4.txt */,
+				3CB9390B216CA2C600AA7A65 /* 5.txt */,
+			);
+			path = new;
+			sourceTree = "<group>";
+		};
+		3C189CDA21985FF400EA8F88 /* cur */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = cur;
+			sourceTree = "<group>";
+		};
 		3CB938E7216A07B400AA7A65 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +106,8 @@
 				3CB938FB216A0DE000AA7A65 /* message.c */,
 				3CB938FD216A0E1700AA7A65 /* envelope.h */,
 				3CB938FE216A0E1700AA7A65 /* envelope.c */,
+				3C189CD521985F9700EA8F88 /* maildir.h */,
+				3C189CD621985F9700EA8F88 /* maildir.c */,
 			);
 			path = smtp_client;
 			sourceTree = "<group>";
@@ -91,11 +115,8 @@
 		3CB9390C216CA2D600AA7A65 /* maildir */ = {
 			isa = PBXGroup;
 			children = (
-				3CB9390A216CA2C600AA7A65 /* 1.txt */,
-				3CB93908216CA2C500AA7A65 /* 2.txt */,
-				3CB93907216CA2C500AA7A65 /* 3.txt */,
-				3CB93909216CA2C500AA7A65 /* 4.txt */,
-				3CB9390B216CA2C600AA7A65 /* 5.txt */,
+				3C189CD821985FE100EA8F88 /* new */,
+				3C189CDA21985FF400EA8F88 /* cur */,
 			);
 			path = maildir;
 			sourceTree = "<group>";
@@ -156,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C189CD721985F9700EA8F88 /* maildir.c in Sources */,
 				3CB938F4216A07B400AA7A65 /* main.c in Sources */,
 				3CB93906216ABD1F00AA7A65 /* read_message.c in Sources */,
 				3CB938FC216A0DE000AA7A65 /* message.c in Sources */,
