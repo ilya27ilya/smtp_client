@@ -79,6 +79,8 @@ int main(int argc, const char * argv[]) {
     
     init_manager();
     Run(1,1);
+    
+
 
     
     return 0;

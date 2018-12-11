@@ -32,7 +32,7 @@ int begin_send_messages_high(int sock){
     }
     printf("EHLO send\n");
     
-    return res;
+    return SMTP.state;
     
 //    res  = send_message(sock, message);
 //    if (res == 10)
@@ -61,7 +61,7 @@ int end_send_messages_high(int sock){
     }
     printf("QUIT send\n");
     
-    return res;
+    return SMTP.state;
 }
 
 int send_message(int sock, struct message* message){
@@ -154,7 +154,7 @@ int send_message(int sock, struct message* message){
     
     printf("Success in sending message\n");
     
-    return res;
+    return SMTP.state;
 }
 
 

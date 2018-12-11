@@ -40,9 +40,6 @@ int Run(int attempts_number, int attempts_delay){
         return -1;
     }
     
-//    char* mes_name_list[] = {"/Users/mam/xcode/smtp_client/maildir/new/1.txt","/Users/mam/xcode/smtp_client/maildir/new/2.txt","/Users/mam/xcode/smtp_client/maildir/new/3.txt","/Users/mam/xcode/smtp_client/maildir/new/4.txt","/Users/mam/xcode/smtp_client/maildir/new/5.txt"};
-//    int mes_name_num  = 0;
-    
     Node *head = NULL;
     push(&head, "/Users/mam/xcode/smtp_client/maildir/new/1.txt");
     push(&head, "/Users/mam/xcode/smtp_client/maildir/new/2.txt");
@@ -56,7 +53,8 @@ int Run(int attempts_number, int attempts_delay){
     char* file_name;
     
     while(1){
-
+        printf("3");
+        
         struct message* new_message = create_message();
         if(head != NULL){
             file_name = pop(&head);
@@ -86,10 +84,30 @@ int Run(int attempts_number, int attempts_delay){
             }
         }
         
+        fd_set socket_set;
+        FD_ZERO(&socket_set);
+        FD_SET(sock_ma, &socket_set);
+        FD_SET(sock_go, &socket_set);
+        FD_SET(sock_ya, &socket_set);
+        
+        if (select(sock_go+1, &socket_set, NULL, NULL, NULL) == 1){
+            
+            if (FD_ISSET(sock_ma, &socket_set) && Manager.ma_state == INIT_STATE_SMTP){
+                Manager.ma_state = begin_send_messages_high(sock_ma);
+            }
+            
+            if (FD_ISSET(sock_ya, &socket_set)){
+                Manager.ya_state = begin_send_messages_high(sock_ya);
+            }
+            
+            if (FD_ISSET(sock_go, &socket_set)){
+                Manager.go_state = begin_send_messages_high(sock_go);
+            }
+            
+        }
         
 
-
-
+        
     }
     
     close(sock_ya);
