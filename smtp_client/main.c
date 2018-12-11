@@ -77,6 +77,7 @@ int main(int argc, const char * argv[]) {
 //    //printf("Connection close\n");
 //    free_message(message);
     
+    init_manager();
     Run(1,1);
 
     

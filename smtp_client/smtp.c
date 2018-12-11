@@ -10,7 +10,7 @@
 
 struct SMTP SMTP;
 
-int send_messages_high(struct message* message, int sock){
+int begin_send_messages_high(int sock){
     
     int res = 0;
     char buffer[DATA_BUFFER];
@@ -32,23 +32,27 @@ int send_messages_high(struct message* message, int sock){
     }
     printf("EHLO send\n");
     
+    return res;
     
-    res  = send_message(sock, message);
-    if (res == 10)
-    {
-        SMTP.state = ERROR_COMAND;
-        printf("Error in sending message");
-        return ERROR_COMAND;
-    }
+//    res  = send_message(sock, message);
+//    if (res == 10)
+//    {
+//        SMTP.state = ERROR_COMAND;
+//        printf("Error in sending message");
+//        return ERROR_COMAND;
+//    }
+}
+int end_send_messages_high(int sock){
     
-    
+    int res = 0;
+    char buffer[DATA_BUFFER];
     printf("Sending QUIT\n");
     SMTP.state = QUIT_COMMAND;
     send_command(sock, QUIT_COMMAND, NULL);
     
     bzero(buffer, DATA_BUFFER);
     read(sock, buffer, DATA_BUFFER);
-    result_code = strtol(buffer, NULL, 10);
+    long result_code = strtol(buffer, NULL, 10);
     if (result_code != SUCCESS_QUIT_CODE)
     {
         SMTP.state = ERROR_COMAND;
@@ -99,7 +103,7 @@ int send_message(int sock, struct message* message){
     
     
 //    printf("Send DATA command\n");
-//    SMTP.state = DATA_COMMAND;
+    SMTP.state = DATA_COMMAND;
 //    send_command(sock, DATA_COMMAND, NULL);
 //
 //    bzero(buffer, DATA_BUFFER);
@@ -116,7 +120,7 @@ int send_message(int sock, struct message* message){
 //
 //
 //    printf("Send message body\n");
-//    SMTP.state = MESSAGE_BODY_COMMAND;
+    SMTP.state = MESSAGE_BODY_COMMAND;
 //    send_command(sock, MESSAGE_BODY_COMMAND, message->body);
 //
 //    bzero(buffer, DATA_BUFFER);
@@ -134,7 +138,7 @@ int send_message(int sock, struct message* message){
 //
 //
 //    printf("Send DATA END command\n");
-//    SMTP.state = DATA_END_COMMAND;
+    SMTP.state = DATA_END_COMMAND;
 //    send_command(sock, DATA_END_COMMAND, NULL);
 //
 //    bzero(buffer, DATA_BUFFER);
