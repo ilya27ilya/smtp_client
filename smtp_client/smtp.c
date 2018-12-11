@@ -203,7 +203,8 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
     bzero(buffer, DATA_BUFFER);
     int sock = -1;
     
-    printf("Try to esteblish connection\n");
+    printf("Try to esteblish connection ");
+    printf("%s\n",host);
     
     if ((he = gethostbyname(host )) == NULL)
         return -1;
@@ -230,10 +231,12 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
     result_code = strtol(buffer, NULL, 10);
     if (result_code != SUCCESS_CONNECTION_CODE)
     {
-        printf("Can`t esteblish connection\n");
+        printf("Can`t esteblish connection");
+        printf("%s\n",host);
         return ERROR_COMAND;
     }
-    printf("Connection esteblished\n");
+    printf("Connection esteblished ");
+    printf("%s\n",host);
     
     return sock;
 }

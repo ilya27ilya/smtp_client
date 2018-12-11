@@ -15,7 +15,8 @@
 
 
 
-int Run();
+
+int Run(int attempts_number, int attempts_delay);
 
 //инициализация
 //работа

@@ -56,24 +56,28 @@ int main(int argc, const char * argv[]) {
     
     //struct message* message1 = read_message("/Users/mam/xcode/smtp_client/maildir/new/1.txt");
 //
-    char sender[] = "orilbit@yandex.ru";
-    char receiver[] = "c4.i1@yandex.ru";
-    char subject[] = "diploma";
-    char date[] = "diploma";
-    char id[] = "1111";
-    char body[] = "12345";
-
-    struct message_envelope* envelope = create_envelope(sender, receiver, subject, date);
-    struct message* message = create_message();
-    message = fill_message(message, id, envelope, body);
-    const char strServerName[] = "mx.yandex.ru";
-
+//    char sender[] = "orilbit@yandex.ru";
+//    char receiver[] = "c4.i1@yandex.ru";
+//    char subject[] = "diploma";
+//    char date[] = "diploma";
+//    char id[] = "1111";
+//    char body[] = "12345";
+//
+//    struct message_envelope* envelope = create_envelope(sender, receiver, subject, date);
+//    struct message* message = create_message();
+//    message = fill_message(message, id, envelope, body);
+//
+//
+//
+//
+//    //send_messages_high(message, sock);
+//
+//
+//
+//    //printf("Connection close\n");
+//    free_message(message);
     
-    int sock = create_socket(strServerName, 25, 1, 1);
-    send_messages_high(message, sock);
-    close(sock);
-    printf("Connection close\n");
-    free_message(message);
+    Run(1,1);
 
     
     return 0;
