@@ -24,7 +24,7 @@ struct message_envelope* create_envelope(char* sender, char* receiver, char* sub
     if (!envelope)
         return NULL;
     
-    unsigned char tmp = strlen(sender);
+    unsigned int tmp = strlen(sender);
     envelope->sender = (char*) malloc(tmp+1);
     if(!envelope->sender){
         return NULL;
@@ -37,6 +37,7 @@ struct message_envelope* create_envelope(char* sender, char* receiver, char* sub
     if(!envelope->date){
         return NULL;
     }
+    
     strcpy(envelope->date, date);
     envelope->date[tmp] = '\0';
     

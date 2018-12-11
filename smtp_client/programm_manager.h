@@ -9,7 +9,8 @@
 #ifndef programm_manager_h
 #define programm_manager_h
 
-#include <stdio.h>
+#include <stdlib.h>
+#include <netinet/in.h>
 
 #define SOCKET_FD 0
 #define FILE_FD 1

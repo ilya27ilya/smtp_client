@@ -14,6 +14,16 @@
 #include "message.h"
 #include "read_message.h"
 #include "message_list.h"
+#include "smtp.h"
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <resolv.h>
+
 
 int main(int argc, const char * argv[]) {
 //    // insert code here...
@@ -43,12 +53,31 @@ int main(int argc, const char * argv[]) {
 //    free_message_list(mes_list_4);
 //    free_message_list(mes_list_1);
     
+    //struct message* message1 = read_message("/Users/mam/xcode/smtp_client/maildir/new/1.txt");
+
+    char sender[] = "orilbit@yandex.ru";
+    char receiver[] = "c4.i1@yandex.ru";
+    char subject[] = "diploma";
+    char date[] = "diploma";
+    char id[] = "1111";
+    char body[] = "12345";
     
-    
-    
-    
-    
-    
+    struct message_envelope* envelope = create_envelope(sender, receiver, subject, date);
+    struct message* message = create_message();
+    message = fill_message(message, id, envelope, body);
+
+
+    const char strServerName[] = "mx.yandex.ru";
+    int sock;
+
+    sock = connect_to_host(strServerName);
+
+
+    int a;
+    a = send_messages_high(message, sock);
+
+    close(sock);
+    free_message(message);
     
     
     
