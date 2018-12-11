@@ -11,34 +11,11 @@
 
 #include <stdlib.h>
 #include <netinet/in.h>
-
-#define SOCKET_FD 0
-#define FILE_FD 1
-
-struct FileDescSet
-{
-    fd_set set;
-    struct FileDescList *list;
-    int count;
-};
-
-struct FileDesc
-{
-    int id;
-    int type;
-    struct sockaddr_in addr;
-    int context;
-    int goal;
-};
-
-struct FileDescList
-{
-    struct FileDesc fd;
-    struct FileDescList *next;
-};
+#include "smtp.h"
 
 
 
+int Run();
 
 //инициализация
 //работа

@@ -194,45 +194,76 @@ int send_command(int sock, int command_type, char* load){
     return write(sock, command, strlen(command));
 }
 
-
-int connect_to_host(char* strServerName){
+int create_socket(const char* host, int port, int attempts_number, int attempts_delay)
+{
     struct hostent *he;
-    struct sockaddr_in serv_addr;
-    int sock;
+    struct in_addr **addr_list;
+    int socket_found = 0;
     char buffer[DATA_BUFFER];
     bzero(buffer, DATA_BUFFER);
+    int sock = -1;
     
-    he = gethostbyname(strServerName);
+    printf("Try to esteblish connection\n");
     
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-    {
-        printf("\n Socket creation error \n");
+    if ((he = gethostbyname(host )) == NULL)
         return -1;
-    }
     
-    memset(&serv_addr, '0', sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+    addr_list = (struct in_addr **) he->h_addr_list;
     
-    memcpy(&serv_addr.sin_addr, *(he->h_addr_list), sizeof(struct in_addr));
-    
-    
-    printf("Connect socket\n");
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    for(int i = 0; addr_list[i] != NULL && !socket_found; i++)
     {
-        printf("\nConnection Failed \n");
-        return -2;
+        struct sockaddr_in server;
+        memset(&server, 0, sizeof(struct sockaddr_in));
+        server.sin_family = AF_INET;
+        server.sin_addr.s_addr = inet_addr(inet_ntoa(*addr_list[i]));
+        server.sin_port = htons(PORT);
+        
+        sock = try_connect_to_socket(server, attempts_number, attempts_delay);
+        if (sock > 0)
+        {
+            socket_found = 1;
+        }
     }
-    
+
     read(sock, buffer, DATA_BUFFER);
-    long result_code = strtol(buffer, NULL, 10);
+    long result_code = -1;
+    result_code = strtol(buffer, NULL, 10);
     if (result_code != SUCCESS_CONNECTION_CODE)
     {
-        printf("Error in connecting\n");
+        printf("Can`t esteblish connection\n");
         return ERROR_COMAND;
     }
     printf("Connection esteblished\n");
     
-
     return sock;
+}
+
+int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int attempts_delay)
+{
+    int sock = socket(AF_INET , SOCK_STREAM , 0);
+    
+    
+//    int file_flags = fcntl(sock, F_SETFL, O_NONBLOCK);
+//    if (file_flags == -1)
+//    {
+//        printf("Fail to receive socket flags");
+//        return file_flags;
+//    }
+    
+    int i = 0;
+    int result = -1;
+    int connection_established = 0;
+    while (i < attempts_number && !connection_established)
+    {
+        int connect_result = connect(sock,(struct sockaddr *)&server, sizeof(server));
+        if (connect_result == 0)
+        {
+            connection_established = 1;
+            result = sock;
+        }
+        else
+            sleep(attempts_delay);
+        i++;
+    }
+    return result;
 }

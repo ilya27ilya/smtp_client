@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <resolv.h>
+#include "programm_manager.h"
 
 
 int main(int argc, const char * argv[]) {
@@ -54,32 +55,26 @@ int main(int argc, const char * argv[]) {
 //    free_message_list(mes_list_1);
     
     //struct message* message1 = read_message("/Users/mam/xcode/smtp_client/maildir/new/1.txt");
-
+//
     char sender[] = "orilbit@yandex.ru";
     char receiver[] = "c4.i1@yandex.ru";
     char subject[] = "diploma";
     char date[] = "diploma";
     char id[] = "1111";
     char body[] = "12345";
-    
+
     struct message_envelope* envelope = create_envelope(sender, receiver, subject, date);
     struct message* message = create_message();
     message = fill_message(message, id, envelope, body);
-
-
     const char strServerName[] = "mx.yandex.ru";
-    int sock;
 
-    sock = connect_to_host(strServerName);
-
-
-    int a;
-    a = send_messages_high(message, sock);
-
+    
+    int sock = create_socket(strServerName, 25, 1, 1);
+    send_messages_high(message, sock);
     close(sock);
+    printf("Connection close\n");
     free_message(message);
-    
-    
+
     
     return 0;
 }

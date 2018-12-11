@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include "message.h"
+
+
 #define BUFFER_SIZE 500
 #define BODY_SIZE 1000
 #define ENVELOPE_SIZE 500

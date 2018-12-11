@@ -18,11 +18,12 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <resolv.h>
+#include <fcntl.h>
 
-#define PORT 25
+
 #include "message.h"
 
-
+#define PORT 25
 #define DATA_BUFFER 2048
 #define MY_NAME "smtp_i_client"
 
@@ -63,7 +64,8 @@ struct SMTP {
 //создание команды
 
 int send_messages_high(struct message* message, int sock);
-int connect_to_host(char* strServerName);
 int send_command(int sock, int command_type, char* load);
 int send_message(int sock, struct message* message);
+int create_socket(const char* host, int port, int attempts_number, int attempts_delay);
+int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int attempts_delay);
 #endif /* smtp_h */
