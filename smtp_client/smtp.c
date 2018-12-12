@@ -12,7 +12,7 @@ struct SMTP SMTP;
 
 int begin_send_messages_high(int sock){
     
-    int res = 0;
+    //int res = 0;
     char buffer[DATA_BUFFER];
     bzero(buffer, DATA_BUFFER);
     
@@ -24,6 +24,7 @@ int begin_send_messages_high(int sock){
     
     read(sock, buffer, DATA_BUFFER);
     long result_code = strtol(buffer, NULL, 10);
+    printf("%s\n",buffer);
     if (result_code != SUCCESS_OPERATION_CODE)
     {
         SMTP.state = ERROR_COMAND;
@@ -198,14 +199,31 @@ int send_command(int sock, int command_type, char* load){
     return write(sock, command, strlen(command));
 }
 
-int create_socket(const char* host, int port, int attempts_number, int attempts_delay)
+int get_response(int sock, int response_code, int state,char* error_message){
+    char buffer[DATA_BUFFER];
+    bzero(buffer, DATA_BUFFER);
+    
+    read(sock, buffer, DATA_BUFFER);
+    long result_code = strtol(buffer, NULL, 10);
+    printf("%s\n",buffer);
+    if (result_code != response_code)
+    {
+        SMTP.state = ERROR_COMAND;
+        printf(error_message);
+        return ERROR_COMAND;
+    }
+    SMTP.state = state;
+    return SMTP.state;
+    
+}
+
+int create_socket(const char* host, int port, int attempts_number, int attempts_delay, int* sock)
 {
     struct hostent *he;
     struct in_addr **addr_list;
     int socket_found = 0;
     char buffer[DATA_BUFFER];
     bzero(buffer, DATA_BUFFER);
-    int sock = -1;
     
     printf("Try to esteblish connection ");
     printf("%s\n",host);
@@ -223,40 +241,19 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
         server.sin_addr.s_addr = inet_addr(inet_ntoa(*addr_list[i]));
         server.sin_port = htons(PORT);
         
-        sock = try_connect_to_socket(server, attempts_number, attempts_delay);
+        *sock = try_connect_to_socket(server, attempts_number, attempts_delay);
         if (sock > 0)
         {
             socket_found = 1;
         }
     }
-
-    read(sock, buffer, DATA_BUFFER);
-    long result_code = -1;
-    result_code = strtol(buffer, NULL, 10);
-    if (result_code != SUCCESS_CONNECTION_CODE)
-    {
-        printf("Can`t esteblish connection");
-        printf("%s\n",host);
-        return ERROR_COMAND;
-    }
-    printf("Connection esteblished ");
-    printf("%s\n",host);
-    
-    return sock;
+    return 0;
 }
+
 
 int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int attempts_delay)
 {
     int sock = socket(AF_INET , SOCK_STREAM , 0);
-    
-    
-//    int file_flags = fcntl(sock, F_SETFL, O_NONBLOCK);
-//    if (file_flags == -1)
-//    {
-//        printf("Fail to receive socket flags");
-//        return file_flags;
-//    }
-    
     int i = 0;
     int result = -1;
     int connection_established = 0;
@@ -273,4 +270,15 @@ int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int at
         i++;
     }
     return result;
+}
+
+
+long read_response(int sock){
+    char buffer[DATA_BUFFER];
+    bzero(buffer, DATA_BUFFER);
+    
+    read(sock, buffer, DATA_BUFFER);
+    long result_code = strtol(buffer, NULL, 10);
+
+    return result_code;
 }

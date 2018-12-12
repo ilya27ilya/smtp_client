@@ -80,6 +80,11 @@ int main(int argc, const char * argv[]) {
     init_manager();
     Run(1,1);
     
+//    int sock;
+//    int state;
+//    state = create_socket("mx.yandex.ru", 25, 1, 1,&sock);
+//    printf("%d\n",state);
+//    printf("%d\n",sock);
 
 
     

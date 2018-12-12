@@ -13,11 +13,11 @@
 #include <netinet/in.h>
 #include "smtp.h"
 #include "read_message.h"
+#include <sys/select.h>
+#include "smtp_fsm.h"
 
 #define MAX_MES_NUMBER 3
 
-#define EMPTY_MESSAGE 1
-#define FULL_MESSAGE 0
 
 #define INIT_STATE 0
 

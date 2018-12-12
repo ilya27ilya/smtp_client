@@ -37,8 +37,11 @@
 #define CLOSE_BRACKET ">"
 #define DATA_END "."
 
+#define CONNECTED_ERROR "Error in conection response"
+
 
 #define INIT_STATE_SMTP 7
+#define CONNECTED 8
 #define EHLO_COMMAND 0
 #define MAIL_FROM_COMMAND 1
 #define RCPT_TO_COMMAND 2
@@ -68,6 +71,12 @@ int end_send_messages_high(int sock);
 int begin_send_messages_high(int sock);
 int send_command(int sock, int command_type, char* load);
 int send_message(int sock, struct message* message);
-int create_socket(const char* host, int port, int attempts_number, int attempts_delay);
+
+int create_socket(const char* host, int port, int attempts_number, int attempts_delay,int* sock);
+
 int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int attempts_delay);
+int get_response(int sock, int response_code, int state,char* error_message);
+
+
+long read_response(int sock);
 #endif /* smtp_h */
