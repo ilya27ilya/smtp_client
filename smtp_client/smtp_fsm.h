@@ -16,6 +16,7 @@
 #define START 0
 #define CONNECT 1
 #define REC_CONNECT_INFO 2
+
 #define EHLO_STATE 3
 #define REC_EHLO 4
 #define MAIL_FROM_STATE 5
@@ -29,6 +30,7 @@
 #define DATA_END_STATE 13
 #define REC_DATA_END 14
 #define QUIT_STATE 15
+
 #define ERROR_STATE 16
 
 

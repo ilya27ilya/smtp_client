@@ -24,30 +24,12 @@
 struct Controller {
     int state;
     int current_message_number;
-    int ya_message;
-    int ma_message;
-    int go_message;
-    int ya_state;
-    int go_state;
-    int ma_state;
+
+
 };
 
 void init_manager();
 int Run(int attempts_number, int attempts_delay);
-
-
-//инициализация
-//работа
-//остановка
-
-typedef struct Node {
-    char* value;
-    struct Node *next;
-} Node;
-
-void push(Node **head, char* data);
-char* pop(Node **head);
-
 
 
 #endif /* programm_manager_h */
