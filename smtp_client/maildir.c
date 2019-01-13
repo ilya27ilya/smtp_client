@@ -9,6 +9,7 @@
 #include "maildir.h"
 
 
+
 int get_name(char* new_maildir_name, char* cur_maildir_name){
     
     struct dirent *de;
@@ -32,8 +33,8 @@ int get_name(char* new_maildir_name, char* cur_maildir_name){
             continue;
         }
         
-        strcpy(buf, "\0");///////////////////?????????????????????????????/
-        strcpy(domain, "\0");/////////////////////////????????????????????
+        memset(buf, 0, MAX_FILE_NAME_LEN);
+        memset(domain, 0, MAX_DOMAIN_LEN);
         
         if (mes_queue == NULL)
         {

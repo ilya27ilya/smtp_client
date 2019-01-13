@@ -15,21 +15,25 @@
 #include "read_message.h"
 #include <sys/select.h>
 #include "smtp_fsm.h"
-
-#define MAX_MES_NUMBER 3
-
-
-#define INIT_STATE 0
-
-struct Controller {
-    int state;
-    int current_message_number;
+#include "logging.h"
 
 
+#define MAX_COUNT_DOMAIN 10
+
+
+struct mail_process_dscrptr
+{
+    pid_t pid;         
+    int queue_id;
+    int domains_count;
+    int mails_count;
+    char *domains[MAX_COUNT_DOMAIN];
 };
 
-void init_manager();
+
+void init_manager(char* new_dir_name, char* cur_dir_name, char* log_filename, int attempt_delay, int attempt_number, int max_proc_number);
 int Run(int attempts_number, int attempts_delay);
+void process_fork(int count);
 
 
 #endif /* programm_manager_h */

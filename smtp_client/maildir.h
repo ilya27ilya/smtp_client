@@ -30,7 +30,7 @@ struct file_list
 };
 
 void file_rename(char* src, char* dest);
-get_name(char* new_maildir_name, char* cur_maildir_name);
+int get_name(char* new_maildir_name, char* cur_maildir_name);
 int get_domain(char* file_name, char* domain);
 
 #endif /* maildir_h */

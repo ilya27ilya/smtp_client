@@ -152,7 +152,7 @@ int smtp_fsm(int state, int sock, struct message* message, int* mess_state){
             break;
         }
         case QUIT_STATE:{
-            state = read_response(sock);
+            result_code = read_response(sock);
             if (result_code == SUCCESS_OPERATION_CODE) {
                 state = REC_EHLO;
                 *mess_state = REC_CONNECT_INFO;

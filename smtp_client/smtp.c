@@ -45,7 +45,7 @@ int begin_send_messages_high(int sock){
 }
 int end_send_messages_high(int sock){
     
-    int res = 0;
+    //int res = 0;
     char buffer[DATA_BUFFER];
     printf("Sending QUIT\n");
     SMTP.state = QUIT_COMMAND;
@@ -66,7 +66,7 @@ int end_send_messages_high(int sock){
 }
 
 int send_message(int sock, struct message* message){
-    int res = 0;
+    //int res = 0;
     char buffer[DATA_BUFFER];
     bzero(buffer, DATA_BUFFER);
     
@@ -209,7 +209,7 @@ int get_response(int sock, int response_code, int state,char* error_message){
     if (result_code != response_code)
     {
         SMTP.state = ERROR_COMAND;
-        printf(error_message);
+        printf("%s", error_message);
         return ERROR_COMAND;
     }
     SMTP.state = state;

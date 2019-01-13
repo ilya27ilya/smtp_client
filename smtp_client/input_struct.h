@@ -15,6 +15,7 @@ struct input_struct {
     char*   logger_name;
     int     attempt_number;
     int     attempt_delay;
+    int     max_proc_number;
 };
 
 #endif /* input_struct_h */
