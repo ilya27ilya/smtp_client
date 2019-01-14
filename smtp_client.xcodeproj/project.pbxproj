@@ -15,6 +15,8 @@
 		3C99B18C21EB3880000ECCE5 /* logging.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18B21EB3880000ECCE5 /* logging.c */; };
 		3C99B18F21EB3C9E000ECCE5 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18E21EB3C9E000ECCE5 /* Makefile */; };
 		3CA4AB5821EBD1B0007D902B /* confl.cfg in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5721EBD1B0007D902B /* confl.cfg */; };
+		3CA4AB5C21ECC412007D902B /* fsm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5B21ECC412007D902B /* fsm.c */; };
+		3CA4AB6021ECEBF3007D902B /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5F21ECEBF3007D902B /* run.c */; };
 		3CA70AF221BFC54200CB5A18 /* programm_manager.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA70AF121BFC54200CB5A18 /* programm_manager.c */; };
 		3CB938F4216A07B400AA7A65 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938F3216A07B400AA7A65 /* main.c */; };
 		3CB938FC216A0DE000AA7A65 /* message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FB216A0DE000AA7A65 /* message.c */; };
@@ -50,6 +52,11 @@
 		3C99B18B21EB3880000ECCE5 /* logging.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = logging.c; sourceTree = "<group>"; };
 		3C99B18E21EB3C9E000ECCE5 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		3CA4AB5721EBD1B0007D902B /* confl.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = confl.cfg; sourceTree = "<group>"; };
+		3CA4AB5A21ECBE9F007D902B /* fsm.fsm */ = {isa = PBXFileReference; lastKnownFileType = text; path = fsm.fsm; sourceTree = "<group>"; };
+		3CA4AB5B21ECC412007D902B /* fsm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fsm.c; sourceTree = "<group>"; };
+		3CA4AB5D21ECC419007D902B /* fsm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fsm.h; sourceTree = "<group>"; };
+		3CA4AB5E21ECEBF3007D902B /* run.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = run.h; sourceTree = "<group>"; };
+		3CA4AB5F21ECEBF3007D902B /* run.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = run.c; sourceTree = "<group>"; };
 		3CA70AF021BFC54200CB5A18 /* programm_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = programm_manager.h; sourceTree = "<group>"; };
 		3CA70AF121BFC54200CB5A18 /* programm_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = programm_manager.c; sourceTree = "<group>"; };
 		3CB938F0216A07B400AA7A65 /* smtp_client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smtp_client; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +113,11 @@
 			children = (
 				3C99B18E21EB3C9E000ECCE5 /* Makefile */,
 				3CB938F3216A07B400AA7A65 /* main.c */,
+				3CA4AB5F21ECEBF3007D902B /* run.c */,
+				3CA4AB5E21ECEBF3007D902B /* run.h */,
+				3CA4AB5A21ECBE9F007D902B /* fsm.fsm */,
+				3CA4AB5D21ECC419007D902B /* fsm.h */,
+				3CA4AB5B21ECC412007D902B /* fsm.c */,
 				3CA4AB5721EBD1B0007D902B /* confl.cfg */,
 				3C99B18321E9FCD1000ECCE5 /* input_struct.h */,
 				3CA70AF121BFC54200CB5A18 /* programm_manager.c */,
@@ -190,6 +202,8 @@
 			files = (
 				3CA4AB5821EBD1B0007D902B /* confl.cfg in Sources */,
 				3C189CDD219864C000EA8F88 /* smtp.c in Sources */,
+				3CA4AB5C21ECC412007D902B /* fsm.c in Sources */,
+				3CA4AB6021ECEBF3007D902B /* run.c in Sources */,
 				3C189CD721985F9700EA8F88 /* maildir.c in Sources */,
 				3CA70AF221BFC54200CB5A18 /* programm_manager.c in Sources */,
 				3CB938F4216A07B400AA7A65 /* main.c in Sources */,

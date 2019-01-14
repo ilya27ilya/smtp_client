@@ -11,36 +11,34 @@
 
 
 #include <stdio.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <errno.h>
-#include <unistd.h>
 #include <time.h>
+#include <stdlib.h>
+#include <string.h>
+#include <dirent.h>
+#include <mqueue.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdarg.h>
 
+
+#define LOG_QUEUE_NAME "/logging_queue"
+#define LOG_SLEEP_MCS (100)
 #define MAX_LOG_MES_SIZE 1024
+#define LOG_MSG_STOP "LOGGING STOP"
+#define MAX_MSG_NUM 10
 #define ERROR_LOG "[ERROR] "
 #define INFO_LOG "[INFO] "
-
-
-typedef struct queue_msg
-{
-    long mtype;
-    char mtext[MAX_LOG_MES_SIZE];
-} queue_msg;
-
-int start_logger(char *log_filename_base);
-int stop_logger(void);
-int send_log_message(char* log, char *message);
-int save_log(char *message, char *logs_dir);
+#define LOG_MSG_STOP "LOGGING STOP"
+#define LOG_NO_TAG ""
+#define LOG_TIME_SIZE 22
 
 
 
-
-
+int logging_loop(char *log_name);
+int save_log_mes(char *message, char *log_name);
+void write_log(char *tag, char *message, ...);
+void log_stop();
 
 
 #endif /* logging_h */

@@ -8,20 +8,24 @@
 
 #include "programm_manager.h"
 
-void init_manager(char* new_dir_name, char* cur_dir_name, char* log_filename, int attempt_delay, int attempt_number, int max_proc_number){
-    send_log_message(INFO_LOG, "I");
-    Run(attempt_number, attempt_delay);
+int init_manager(input_struct input_data){
+    int result;
+    write_log(INFO_LOG, "START SMTP SERVER");
+    result = run_main_loop(input_data.attempt_number, input_data.attempt_number);
+    return result;
 }
 
 
 
-int Run(int attempts_number, int attempts_delay){
+int run_main_loop(long attempts_number, long attempts_delay){
     
-    usleep(100);
-    send_log_message(INFO_LOG, "am");
+    
+
     while(1){
-        usleep(100);
-        send_log_message(INFO_LOG, "log");
+        //sleep(2);
+        write_log(ERROR_LOG, "HELLO");
+        write_log(ERROR_LOG, "its");
+        write_log(ERROR_LOG, "work");
     }
     return 0;
     

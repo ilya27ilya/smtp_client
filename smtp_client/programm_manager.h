@@ -16,6 +16,8 @@
 #include <sys/select.h>
 #include "smtp_fsm.h"
 #include "logging.h"
+#include "input_struct.h"
+
 
 
 #define MAX_COUNT_DOMAIN 10
@@ -31,8 +33,8 @@ struct mail_process_dscrptr
 };
 
 
-void init_manager(char* new_dir_name, char* cur_dir_name, char* log_filename, int attempt_delay, int attempt_number, int max_proc_number);
-int Run(int attempts_number, int attempts_delay);
+int init_manager(input_struct input_data);
+int run_main_loop(long attempts_number, long attempts_delay);
 void process_fork(int count);
 
 

@@ -9,30 +9,11 @@
  список писем - > письмо -> нагрузка, конврет -> (отправитель, список получателей -> получателей)
  работать с файлами только на клиенте
 */
-#include </usr/local/Cellar/libconfig/1.7.2/include/libconfig.h>
-
-#include <stdio.h>
-#include "message.h"
-#include "read_message.h"
-#include "message_list.h"
-#include "smtp.h"
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <string.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <resolv.h>
-#include "programm_manager.h"
-
-#include "maildir.h"
-#include <string.h>
-#include "input_struct.h"
-#include "logging.h"
+#include <libconfig.h>
+#include "run.h"
 
 #define ARG_NUM_ERROR -7
-#define ARG_NUM 7
+#define ARG_NUM 1
 
 void lookup_string(config_t cfg, char *lookup, char *dest, size_t size) {
     const char *tmp_string = NULL;
@@ -66,42 +47,32 @@ int read_config(char *cfg_filename, input_struct *input_data) {
     
     
 }
+void print_config(input_struct input_data) {
+    printf("\n*** CONFIG ***\n\n");
+    printf("*** NEW_DIR: %s\n", input_data.new_dir);
+    printf("*** CUR_DIR: %s\n", input_data.cur_dir);
+    printf("*** LOGGER_DIR: %s\n", input_data.logger_name);
+    printf("*** ATTEMPT_NUMBER: %lu\n", input_data.attempt_number);
+    printf("*** ATTEMPT_DELAY: %lu\n", input_data.attempt_delay);
+    printf("*** MAX_PROC_NUMBER: %lu\n", input_data.max_proc_number);
+    printf("\n*** END CONFIG ***\n\n");
+}
 
 int main(int argc, const char * argv[]) {
     
 //    if(argc != ARG_NUM){
-//        printf("not enough paramentrs\n");
+//        printf("Enter config file\n");
 //        return ARG_NUM_ERROR;
 //    }
     
-    
     input_struct input_data;
-    read_config("confl.cfg", &input_data);
     
-    printf("%s \n",input_data.new_dir);
+    int result = read_config("confl.cfg", &input_data);
+    if (!result) {
+        //print_config(input_data);
+        result = run(input_data);
+        return result;
+    }
     
-    
-//    
-//    input_data.new_dir = argv[1];
-//    input_data.cur_dir = argv[2];
-//    input_data.logger_name = argv[3];
-//    input_data.attempt_delay =  atoi(argv[4]);
-//    input_data.attempt_number = atoi(argv[5]);
-//    input_data.max_proc_number = atoi(argv[6]);
-    
-//    if (fork() == 0){
-//        start_logger(input_data.logger_name);
-//    }
-//    else{
-//        sleep(1);
-//        send_log_message(INFO_LOG, "HI");
-//
-//        init_manager(input_data.new_dir, input_data.cur_dir, input_data.logger_name, input_data.attempt_delay, input_data.attempt_number, input_data.max_proc_number);
-//
-//    }
-//
-    //get_name(input_data.new_dir,input_data.cur_dir);
-    
-    
-    return 0;
+    return result;
 }
