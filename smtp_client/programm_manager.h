@@ -18,6 +18,7 @@
 #include "logging.h"
 #include "input_struct.h"
 #include <stdio.h>
+#include "maildir.h"
 
 #define MAX_COUNT_DOMAIN 10
 #define MAX_DOMAIN_LIST_LEN 1024

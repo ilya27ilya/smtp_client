@@ -10,7 +10,7 @@
 
 
 
-int get_name(char* new_maildir_name, char* cur_maildir_name){
+struct file_list* get_name(char* new_maildir_name, char* cur_maildir_name){
     
     struct dirent *de;
     DIR *dr = opendir(new_maildir_name);
@@ -18,7 +18,7 @@ int get_name(char* new_maildir_name, char* cur_maildir_name){
     if (dr == NULL)
     {
         printf("Could not open current directory" );
-        return 0;
+        return NULL;
     }
     
     struct file_list *mes_queue = NULL;
@@ -28,7 +28,7 @@ int get_name(char* new_maildir_name, char* cur_maildir_name){
     char domain[MAX_DOMAIN_LEN];
     
     while ((de = readdir(dr)) != NULL){
-        if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0)
+        if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0 || strcmp(de->d_name, ".DS_Store") == 0)
         {
             continue;
         }
@@ -80,15 +80,14 @@ int get_name(char* new_maildir_name, char* cur_maildir_name){
     
     closedir(dr);
 
-    next = mes_queue;
-    while (next != NULL) {
-        next = next->next;
-        printf("%s",mes_queue->file_name);
-        printf("   -    %s \n",mes_queue->domain);
-        mes_queue = next;
-    }
-
-    return 0;
+//    next = mes_queue;
+//    while (next != NULL) {
+//        next = next->next;
+//        printf("%s",mes_queue->file_name);
+//        printf("   -    %s \n",mes_queue->domain);
+//        mes_queue = next;
+//    }
+    return mes_queue;
 }
 
 

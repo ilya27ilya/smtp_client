@@ -54,8 +54,26 @@ int run_main_loop(input_struct input_data,int* proc){
     for (int i = 0; i < proc_number; i++)
         write_log(INFO_LOG, "Child proc: %d %d %d queue_name %s dom %s",child_array[i].pid,child_array[i].messenge_number, child_array[i].connection, child_array[i].queue_name, child_array[i].domain);
     
+    struct file_list *mes_queue = NULL;
 //    while(1){
 //    }
+    
+    while (1) {
+    mes_queue = get_name(input_data.new_dir, input_data.cur_dir);
+        
+        struct file_list *next = mes_queue;
+        if(mes_queue != NULL){
+            while (next != NULL) {
+                next = next->next;
+                write_log(INFO_LOG, "%s  -  %s",mes_queue->file_name,mes_queue->domain);
+                mes_queue = next;
+            }
+        }
+        else{
+            printf("there is now file in new_dir \n");
+        }
+        sleep(2);
+    }
     
     free_child_info_array(child_array, proc_number);
     return 0;
