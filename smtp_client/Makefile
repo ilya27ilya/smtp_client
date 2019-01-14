@@ -6,7 +6,7 @@ OBJ = main.o logging.o message_list.o list.o smtp_fsm.o programm_manager.o read_
 
 
 client: $(OBJ)
-	gcc -L/usr/lib/ -o $@ $^ -lfiredns -lrt
+	gcc -L/usr/lib/ -o $@ $^ -lrt -lconfig
 
 clean:
 	rm client $(OBJ)

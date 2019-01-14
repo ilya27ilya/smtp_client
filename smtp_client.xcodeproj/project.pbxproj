@@ -14,6 +14,7 @@
 		3C99B18921EA04E4000ECCE5 /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18821EA04E4000ECCE5 /* list.c */; };
 		3C99B18C21EB3880000ECCE5 /* logging.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18B21EB3880000ECCE5 /* logging.c */; };
 		3C99B18F21EB3C9E000ECCE5 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18E21EB3C9E000ECCE5 /* Makefile */; };
+		3CA4AB5821EBD1B0007D902B /* confl.cfg in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5721EBD1B0007D902B /* confl.cfg */; };
 		3CA70AF221BFC54200CB5A18 /* programm_manager.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA70AF121BFC54200CB5A18 /* programm_manager.c */; };
 		3CB938F4216A07B400AA7A65 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938F3216A07B400AA7A65 /* main.c */; };
 		3CB938FC216A0DE000AA7A65 /* message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FB216A0DE000AA7A65 /* message.c */; };
@@ -48,6 +49,7 @@
 		3C99B18A21EB3880000ECCE5 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		3C99B18B21EB3880000ECCE5 /* logging.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = logging.c; sourceTree = "<group>"; };
 		3C99B18E21EB3C9E000ECCE5 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		3CA4AB5721EBD1B0007D902B /* confl.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = confl.cfg; sourceTree = "<group>"; };
 		3CA70AF021BFC54200CB5A18 /* programm_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = programm_manager.h; sourceTree = "<group>"; };
 		3CA70AF121BFC54200CB5A18 /* programm_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = programm_manager.c; sourceTree = "<group>"; };
 		3CB938F0216A07B400AA7A65 /* smtp_client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smtp_client; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +106,8 @@
 			children = (
 				3C99B18E21EB3C9E000ECCE5 /* Makefile */,
 				3CB938F3216A07B400AA7A65 /* main.c */,
+				3CA4AB5721EBD1B0007D902B /* confl.cfg */,
+				3C99B18321E9FCD1000ECCE5 /* input_struct.h */,
 				3CA70AF121BFC54200CB5A18 /* programm_manager.c */,
 				3CA70AF021BFC54200CB5A18 /* programm_manager.h */,
 				3C99B18B21EB3880000ECCE5 /* logging.c */,
@@ -117,7 +121,6 @@
 				3CB93904216ABD1F00AA7A65 /* read_message.h */,
 				3CB93905216ABD1F00AA7A65 /* read_message.c */,
 				3CB938FA216A0DE000AA7A65 /* message.h */,
-				3C99B18321E9FCD1000ECCE5 /* input_struct.h */,
 				3CB938FB216A0DE000AA7A65 /* message.c */,
 				3CB938FD216A0E1700AA7A65 /* envelope.h */,
 				3CB938FE216A0E1700AA7A65 /* envelope.c */,
@@ -185,6 +188,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CA4AB5821EBD1B0007D902B /* confl.cfg in Sources */,
 				3C189CDD219864C000EA8F88 /* smtp.c in Sources */,
 				3C189CD721985F9700EA8F88 /* maildir.c in Sources */,
 				3CA70AF221BFC54200CB5A18 /* programm_manager.c in Sources */,
@@ -317,6 +321,7 @@
 		3CB938F8216A07B400AA7A65 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y4M9WKM557;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -326,6 +331,7 @@
 		3CB938F9216A07B400AA7A65 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y4M9WKM557;
 				PRODUCT_NAME = "$(TARGET_NAME)";

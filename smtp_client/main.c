@@ -9,6 +9,7 @@
  список писем - > письмо -> нагрузка, конврет -> (отправитель, список получателей -> получателей)
  работать с файлами только на клиенте
 */
+#include </usr/local/Cellar/libconfig/1.7.2/include/libconfig.h>
 
 #include <stdio.h>
 #include "message.h"
@@ -33,43 +34,72 @@
 #define ARG_NUM_ERROR -7
 #define ARG_NUM 7
 
+void lookup_string(config_t cfg, char *lookup, char *dest, size_t size) {
+    const char *tmp_string = NULL;
+    config_lookup_string(&cfg, lookup, &tmp_string);
+    snprintf(dest, size, "%s", tmp_string);
+}
+
+int read_config(char *cfg_filename, input_struct *input_data) {
+    config_t cfg;
+    config_init(&cfg);
+    // config_read_file(&cfg, cfg_filename);
+    printf("CONF FILENAME: %s\n", cfg_filename);
+    if (!config_read_file(&cfg, cfg_filename)) {
+        printf("CONF FILE NOT READ\n");
+        config_destroy(&cfg);
+        return -1;
+    }
+    
+    //input_struct input_data_tmp;
+    memset(input_data, 0, sizeof(input_struct));
+    lookup_string(cfg, "new_dir", input_data->new_dir,sizeof(input_data->new_dir));
+    lookup_string(cfg, "cur_dir", input_data->cur_dir,sizeof(input_data->new_dir));
+    lookup_string(cfg, "logger_name", input_data->logger_name,sizeof(input_data->new_dir));
+    config_lookup_int(&cfg, "attempt_number", &input_data->attempt_number);
+    config_lookup_int(&cfg, "attempt_delay", &input_data->attempt_delay);
+    config_lookup_int(&cfg, "max_proc_number", &input_data->max_proc_number);
+    
+
+    config_destroy(&cfg);
+    return 0;
+    
+    
+}
 
 int main(int argc, const char * argv[]) {
     
-    if(argc != ARG_NUM){
-        printf("not enough paramentrs");
-        return ARG_NUM_ERROR;
-    }
-    struct input_struct input_data;
-    input_data.new_dir = argv[1];
-    input_data.cur_dir = argv[2];
-    input_data.logger_name = argv[3];
-    input_data.attempt_delay =  atoi(argv[4]);
-    input_data.attempt_number = atoi(argv[5]);
-    input_data.max_proc_number = atoi(argv[6]);
+//    if(argc != ARG_NUM){
+//        printf("not enough paramentrs\n");
+//        return ARG_NUM_ERROR;
+//    }
     
-    stop_logger();
     
-    if (fork() == 0){
-        start_logger(input_data.logger_name);
-    }
-    else{
-        
-        init_manager(input_data.new_dir, input_data.cur_dir, input_data.logger_name, input_data.attempt_delay, input_data.attempt_number, input_data.max_proc_number);
-    }
+    input_struct input_data;
+    read_config("confl.cfg", &input_data);
     
-    //log_i("%s", "Worker for master proc successfully started");
+    printf("%s \n",input_data.new_dir);
+    
+    
+//    
+//    input_data.new_dir = argv[1];
+//    input_data.cur_dir = argv[2];
+//    input_data.logger_name = argv[3];
+//    input_data.attempt_delay =  atoi(argv[4]);
+//    input_data.attempt_number = atoi(argv[5]);
+//    input_data.max_proc_number = atoi(argv[6]);
     
 //    if (fork() == 0){
 //        start_logger(input_data.logger_name);
-//        log_i("%s", "Worker for master proc successfully started");
 //    }
-//    else
-//    {
+//    else{
+//        sleep(1);
+//        send_log_message(INFO_LOG, "HI");
+//
+//        init_manager(input_data.new_dir, input_data.cur_dir, input_data.logger_name, input_data.attempt_delay, input_data.attempt_number, input_data.max_proc_number);
 //
 //    }
-    
-
+//
     //get_name(input_data.new_dir,input_data.cur_dir);
     
     
