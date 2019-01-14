@@ -17,25 +17,26 @@
 #include "smtp_fsm.h"
 #include "logging.h"
 #include "input_struct.h"
-
-
+#include <stdio.h>
 
 #define MAX_COUNT_DOMAIN 10
+#define MAX_DOMAIN_LIST_LEN 1024
 
 
-struct mail_process_dscrptr
-{
-    pid_t pid;         
-    int queue_id;
-    int domains_count;
-    int mails_count;
-    char *domains[MAX_COUNT_DOMAIN];
-};
+typedef struct child_info{
+    int pid;            // Массив id процессов
+    char* queue_name;    // Массив названия очередей процессов
+    int messenge_number; // Массив массив количества сообщений процессов
+    int connection;      // Массив количества подключений процессов
+    char* domain;        // Массив строк содержащий домены для процессов
+    
+}child_info;
 
 
 int init_manager(input_struct input_data);
-int run_main_loop(long attempts_number, long attempts_delay);
-void process_fork(int count);
+int run_main_loop(input_struct input_data,int* proc);
+char* itoa(int val, int base);
+void free_child_info_array(child_info *child_array, long proc_number);
 
 
 #endif /* programm_manager_h */

@@ -15,6 +15,7 @@ int run(input_struct input_data){
         result = logging_loop(input_data.logger_name);
     }
     else{
+        write_log(INFO_LOG, "START SMTP CLIENT");
         result = init_manager(input_data);
     }
     //printf("%s",input_data.logger_name);
