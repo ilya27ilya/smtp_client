@@ -14,6 +14,7 @@ int send_message_to_proc(char* queue_name, char* file_name, char* domain){
     strcpy(buffer, file_name);
     strcat(buffer, " ");
     strcat(buffer, domain);
+    strcat(buffer, " ");
     
     static mqd_t mq = -1;
     static int log_stop = 0;

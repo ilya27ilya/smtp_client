@@ -17,7 +17,7 @@
 
 int child_loop(int i);
 int resv_mes_main(char* queue_name, char* buffer);
-
+struct file_list* parse_main_mes(char* buffer);
 
 
 #endif /* child_proc_h */
