@@ -228,7 +228,7 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
     printf("Try to esteblish connection ");
     printf("%s\n",host);
     
-    if ((he = gethostbyname(host )) == NULL)
+    if ((he = gethostbyname(host)) == NULL)
         return -1;
     
     addr_list = (struct in_addr **) he->h_addr_list;

@@ -19,6 +19,7 @@ int logging_loop(char *log_name){
     attr.mq_curmsgs = 0;
     
     mqd_t mq = mq_open(LOG_QUEUE_NAME, O_CREAT | O_RDONLY | O_NONBLOCK, 0644, &attr);
+    //fprintf(stdout,"log mq = %d",mq);
 
     if (mq == -1) {
         return -1;

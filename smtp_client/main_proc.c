@@ -16,14 +16,12 @@ int send_message_to_proc(char* queue_name, char* file_name, char* domain){
     strcat(buffer, domain);
     strcat(buffer, " ");
     
-    static mqd_t mq = -1;
+    mqd_t mq = mq = mq_open(queue_name, O_WRONLY);
     static int log_stop = 0;
-    
-    if (mq == -1)
-        mq = mq_open(queue_name, O_WRONLY);
+            
     
     if (!log_stop && mq) {
-        write_log(INFO_LOG, "Send info [%s] to queue: %s",buffer,queue_name);
+        write_log(INFO_LOG, "Send info [%s] to queue: %s mq = %d",buffer,queue_name,mq);
         int a =  mq_send(mq, buffer, MAX_LOG_MES_SIZE, 0);
         if(a != 0)
             write_log(ERROR_LOG, "In send info [%s] to queue: %s, a = %d",buffer,queue_name,a);

@@ -31,7 +31,6 @@ int read_config(char *cfg_filename, input_struct *input_data) {
         config_destroy(&cfg);
         return -1;
     }
-    
     //input_struct input_data_tmp;
     memset(input_data, 0, sizeof(input_struct));
     lookup_string(cfg, "new_dir", input_data->new_dir,sizeof(input_data->new_dir));
@@ -40,7 +39,6 @@ int read_config(char *cfg_filename, input_struct *input_data) {
     config_lookup_int(&cfg, "attempt_number", &input_data->attempt_number);
     config_lookup_int(&cfg, "attempt_delay", &input_data->attempt_delay);
     config_lookup_int(&cfg, "max_proc_number", &input_data->max_proc_number);
-    
 
     config_destroy(&cfg);
     return 0;
