@@ -56,9 +56,9 @@ int child_loop(int i){
             istr = strtok (NULL," ");
             strcat(mes_queue->domain, istr);
             
-            write_log(INFO_LOG, "Get mess adr: [%s] domain: [%s] child %d",mes_queue->file_name, mes_queue->domain,child.child_data.pid);
+            write_log(INFO_LOG, "Get mess adr: [%s] domain: [%s]",mes_queue->file_name, mes_queue->domain);
+            strcpy(child.child_data.domain,mes_queue->domain);
             
-            //write_log(INFO_LOG, "Recv mes %s",buffer);
             memset(mes_queue->domain, 0, sizeof(mes_queue->domain));
             memset(mes_queue->file_name, 0, sizeof(mes_queue->file_name));
             mes_queue->next = NULL;
@@ -86,37 +86,9 @@ int resv_mes_main(char* queue_name, char* buffer){
     if(mq){
         ssize_t bytes_read = mq_receive(mq, buffer, MAX_LOG_MES_SIZE, NULL);
         if (bytes_read > 0) {
-            //fprintf(stdout, "%s\n", buffer);
             return 0;
         }
     }
     return 1;
-}
-
-struct file_list* parse_main_mes(char* buffer){
-    struct file_list *mes_queue = NULL;
-//    char bf[MAX_LOG_MES_SIZE + 1];
-//    memset(bf, 0, sizeof(bf));
-//    char sep[2] = " ";
-//
-//    char* istr = strtok (buffer,sep);
-//    strcat(bf, istr);
-//    write_log(INFO_LOG, "%s",bf);
-//    strcat(mes_queue->file_name,bf);
-    
-
-    char tmp[BUFFER_SIZE];
-    char *pointer;
-    char domain[BUFFER_SIZE];
-    unsigned long int len;
-    pointer = strstr(tmp, "@");
-    len = strlen(pointer);
-    memset(domain, '\0', len - 2);
-    strncpy(domain, pointer + 1, len - 3);
-    write_log(INFO_LOG, "%s",domain);
-    //strcat(mes_queue->domain,domain);
-    
-    
-    return mes_queue;
 }
 
