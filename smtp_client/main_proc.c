@@ -23,9 +23,9 @@ int send_message_to_proc(char* queue_name, char* file_name, char* domain){
     
     if (!log_stop && mq) {
         write_log(INFO_LOG, "Send info [%s] to queue: %s",buffer,queue_name);
-        
-        if(mq_send(mq, buffer, MAX_LOG_MES_SIZE, 0) != 0)
-            write_log(ERROR_LOG, "In send info [%s] to queue: %s",buffer,queue_name);
+        int a =  mq_send(mq, buffer, MAX_LOG_MES_SIZE, 0);
+        if(a != 0)
+            write_log(ERROR_LOG, "In send info [%s] to queue: %s, a = %d",buffer,queue_name,a);
         
         
         if (!strcmp(LOG_MSG_STOP, file_name)) {
