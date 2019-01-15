@@ -19,25 +19,18 @@
 #include "input_struct.h"
 #include <stdio.h>
 #include "maildir.h"
+#include "main_proc.h"
+#include "child_struct.h"
+#include "child_proc.h"
 
 #define MAX_COUNT_DOMAIN 10
 #define MAX_DOMAIN_LIST_LEN 1024
-
-
-typedef struct child_info{
-    int pid;            // Массив id процессов
-    char* queue_name;    // Массив названия очередей процессов
-    int messenge_number; // Массив массив количества сообщений процессов
-    int connection;      // Массив количества подключений процессов
-    char* domain;        // Массив строк содержащий домены для процессов
-    
-}child_info;
 
 
 int init_manager(input_struct input_data);
 int run_main_loop(input_struct input_data,int* proc);
 char* itoa(int val, int base);
 void free_child_info_array(child_info *child_array, long proc_number);
-
+int create_connection(child_info* child_array, long proc_number);
 
 #endif /* programm_manager_h */

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C00BFA121ED9613008BC18E /* child_proc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C00BFA021ED9613008BC18E /* child_proc.c */; };
 		3C189CD721985F9700EA8F88 /* maildir.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C189CD621985F9700EA8F88 /* maildir.c */; };
 		3C189CDD219864C000EA8F88 /* smtp.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C189CDC219864C000EA8F88 /* smtp.c */; };
 		3C308883219F0A6500A849C7 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C308882219F0A6500A849C7 /* CoreServices.framework */; };
@@ -17,6 +18,7 @@
 		3CA4AB5821EBD1B0007D902B /* confl.cfg in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5721EBD1B0007D902B /* confl.cfg */; };
 		3CA4AB5C21ECC412007D902B /* fsm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5B21ECC412007D902B /* fsm.c */; };
 		3CA4AB6021ECEBF3007D902B /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5F21ECEBF3007D902B /* run.c */; };
+		3CA4AB6321ED4922007D902B /* main_proc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB6221ED4922007D902B /* main_proc.c */; };
 		3CA70AF221BFC54200CB5A18 /* programm_manager.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CA70AF121BFC54200CB5A18 /* programm_manager.c */; };
 		3CB938F4216A07B400AA7A65 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938F3216A07B400AA7A65 /* main.c */; };
 		3CB938FC216A0DE000AA7A65 /* message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FB216A0DE000AA7A65 /* message.c */; };
@@ -38,6 +40,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3C00BF9F21ED9612008BC18E /* child_proc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = child_proc.h; sourceTree = "<group>"; };
+		3C00BFA021ED9613008BC18E /* child_proc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = child_proc.c; sourceTree = "<group>"; };
 		3C189CD521985F9700EA8F88 /* maildir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = maildir.h; sourceTree = "<group>"; };
 		3C189CD621985F9700EA8F88 /* maildir.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = maildir.c; sourceTree = "<group>"; };
 		3C189CDB219864C000EA8F88 /* smtp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = smtp.h; sourceTree = "<group>"; };
@@ -57,6 +61,8 @@
 		3CA4AB5D21ECC419007D902B /* fsm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fsm.h; sourceTree = "<group>"; };
 		3CA4AB5E21ECEBF3007D902B /* run.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = run.h; sourceTree = "<group>"; };
 		3CA4AB5F21ECEBF3007D902B /* run.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = run.c; sourceTree = "<group>"; };
+		3CA4AB6121ED4922007D902B /* main_proc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main_proc.h; sourceTree = "<group>"; };
+		3CA4AB6221ED4922007D902B /* main_proc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main_proc.c; sourceTree = "<group>"; };
 		3CA70AF021BFC54200CB5A18 /* programm_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = programm_manager.h; sourceTree = "<group>"; };
 		3CA70AF121BFC54200CB5A18 /* programm_manager.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = programm_manager.c; sourceTree = "<group>"; };
 		3CB938F0216A07B400AA7A65 /* smtp_client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = smtp_client; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +75,7 @@
 		3CB93901216A0E3A00AA7A65 /* message_list.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = message_list.c; sourceTree = "<group>"; };
 		3CB93904216ABD1F00AA7A65 /* read_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = read_message.h; sourceTree = "<group>"; };
 		3CB93905216ABD1F00AA7A65 /* read_message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = read_message.c; sourceTree = "<group>"; };
+		3CBFB4DF21ED9C21005906A9 /* child_struct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = child_struct.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +129,11 @@
 				3C99B18321E9FCD1000ECCE5 /* input_struct.h */,
 				3CA70AF121BFC54200CB5A18 /* programm_manager.c */,
 				3CA70AF021BFC54200CB5A18 /* programm_manager.h */,
+				3CBFB4DF21ED9C21005906A9 /* child_struct.h */,
+				3CA4AB6221ED4922007D902B /* main_proc.c */,
+				3CA4AB6121ED4922007D902B /* main_proc.h */,
+				3C00BFA021ED9613008BC18E /* child_proc.c */,
+				3C00BF9F21ED9612008BC18E /* child_proc.h */,
 				3C99B18B21EB3880000ECCE5 /* logging.c */,
 				3C99B18A21EB3880000ECCE5 /* logging.h */,
 				3CB93900216A0E3A00AA7A65 /* message_list.h */,
@@ -203,7 +215,9 @@
 				3CA4AB5821EBD1B0007D902B /* confl.cfg in Sources */,
 				3C189CDD219864C000EA8F88 /* smtp.c in Sources */,
 				3CA4AB5C21ECC412007D902B /* fsm.c in Sources */,
+				3C00BFA121ED9613008BC18E /* child_proc.c in Sources */,
 				3CA4AB6021ECEBF3007D902B /* run.c in Sources */,
+				3CA4AB6321ED4922007D902B /* main_proc.c in Sources */,
 				3C189CD721985F9700EA8F88 /* maildir.c in Sources */,
 				3CA70AF221BFC54200CB5A18 /* programm_manager.c in Sources */,
 				3CB938F4216A07B400AA7A65 /* main.c in Sources */,

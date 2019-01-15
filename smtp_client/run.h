@@ -17,6 +17,7 @@
 #include "logging.h"
 #include "programm_manager.h"
 
+
 int run(input_struct input_data);
 
 #endif /* run_h */

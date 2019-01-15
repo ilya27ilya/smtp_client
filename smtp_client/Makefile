@@ -1,6 +1,6 @@
 CFSM_DIR = cfsm_lib
 CFLAGS = -Wall -Werror -g3
-OBJ = main.o logging.o message_list.o list.o smtp_fsm.o programm_manager.o read_message.o message.o envelope.o maildir.o smtp.o fsm.o run.o
+OBJ = main.o logging.o message_list.o list.o smtp_fsm.o programm_manager.o read_message.o message.o envelope.o maildir.o smtp.o fsm.o run.o main_proc.o child_proc.o
 
 client: $(OBJ)
 	gcc -L/usr/lib/ -o $@ $^ -lrt -lconfig

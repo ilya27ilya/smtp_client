@@ -90,7 +90,7 @@ void write_log(char *tag, char *message, ...) {
     static int log_stop = 0;
     
     if (mq == -1)
-        mq = mq_open(LOG_QUEUE_NAME, O_WRONLY);
+        mq = mq_open(LOG_QUEUE_NAME, O_WRONLY );
     
     if (!log_stop && mq) {
         
