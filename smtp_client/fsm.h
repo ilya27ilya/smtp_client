@@ -11,7 +11,7 @@
 /*
  * The valid states of the FSM
  */
-enum mystate {
+enum child_state {
 	INIT_STATE,
 	HELO_STATE,
 	MAIL_STATE,
@@ -23,7 +23,7 @@ enum mystate {
 /*
  * Events that may cause state transitions in the FSM
  */
-enum myevent {
+enum child_event {
 	HELO_EV,
 	EHLO_EV,
 	RSET_EV,
@@ -38,10 +38,10 @@ enum myevent {
 /*
  * The FSM object itself.
  */
-struct myfsm_transtable;
-struct myfsm {
-	enum mystate current_state;
-	const struct myfsm_transtable *transition_table;
+struct smtp_fsm_transtable;
+struct smtp_fsm {
+	enum child_state current_state;
+	const struct smtp_fsm_transtable *transition_table;
 };
 
 /*
@@ -61,7 +61,7 @@ struct myfsm {
  * If "errbuf" is not NULL, upto "errlen" bytes of error message
  * will be copied into "errbuf" on failure.
  */
-int myfsm_init(struct myfsm *fsm, char *errbuf, size_t errlen);
+int smtp_fsm_init(struct smtp_fsm *fsm, char *errbuf, size_t errlen);
 
 
 /*
@@ -71,38 +71,38 @@ int myfsm_init(struct myfsm *fsm, char *errbuf, size_t errlen);
  * If "errbuf" is not NULL, upto "errlen" bytes of error message will be 
  * copied into "errbuf" on failure.
  */
-int myfsm_advance(struct myfsm *fsm, enum myevent ev,
+int myfsm_advance(struct smtp_fsm *fsm, enum child_event ev,
     char *errbuf, size_t errlen);
 
 /*
  * Convert from the %(event_enum)s enumeration to a string. Will return
  * NULL if the event is not known.
  */
-const char *myfsm_event_ntop(enum myevent);
+const char *smtp_fsm_event_ntop(enum child_event);
 
 /*
  * "Safe" version of %(event_enum_to_string_func)s. Will return the string
  * "[INVALID]" if the event is not known, so it can be used directly
  * in printf() statements, etc.
  */
-const char *myfsm_event_ntop_safe(enum myevent);
+const char *smtp_fsm_event_ntop_safe(enum child_event);
 
 /*
- * Convert from the mystate enumeration to a string. Will return
+ * Convert from the child_state enumeration to a string. Will return
  * NULL if the state is not known.
  */
-const char *myfsm_state_ntop(enum mystate n);
+const char *smtp_fsm_state_ntop(enum child_state n);
 
 /*
- * "Safe" version of myfsm_state_ntop(). Will return the string
+ * "Safe" version of smtp_fsm_state_ntop(). Will return the string
  * "[INVALID]" if the state is not known, so it can be used directly
  * in printf() statements or other contexts where a NULL may be harmful.
  */
-const char *myfsm_state_ntop_safe(enum mystate n);
+const char *smtp_fsm_state_ntop_safe(enum child_state n);
 
 /*
  * Returns the current state of the FSM.
  */
-enum mystate myfsm_current(struct myfsm *fsm);
+enum child_state smtp_fsm_current(struct smtp_fsm *fsm);
 
 #endif /* _FSM_H */

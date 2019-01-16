@@ -1,42 +1,42 @@
 # Define the enumeration and opaque struct types the state machine will use
-state-enum-type mystate
-event-enum-type myevent
-fsm-struct-type myfsm
+state-enum-type child_state
+event-enum-type child_event
+fsm-struct-type smtp_fsm
 
 # Define the names of the exported API functions
-current-state-function myfsm_current
-initialise-function myfsm_init
-free-function myfsm_free
+current-state-function smtp_fsm_current
+initialise-function smtp_fsm_init
+free-function smtp_fsm_free
 advance-function myfsm_advance
-state-enum-to-string-function myfsm_state_ntop
-event-enum-to-string-function myfsm_event_ntop
+state-enum-to-string-function smtp_fsm_state_ntop
+event-enum-to-string-function smtp_fsm_event_ntop
 
 # Define some states and events that trigger transitions between them
 state INIT_STATE
-	initial-state
-	on-event HELO_EV -> HELO_STATE
-	on-event EHLO_EV -> HELO_STATE
-	on-event RSET_EV -> INIT_STATE
-	on-event VRFY_EV -> INIT_STATE
-	on-event QUIT_EV -> ACCEPT_STATE
+initial-state
+on-event HELO_EV -> HELO_STATE
+on-event EHLO_EV -> HELO_STATE
+on-event RSET_EV -> INIT_STATE
+on-event VRFY_EV -> INIT_STATE
+on-event QUIT_EV -> ACCEPT_STATE
 state HELO_STATE
-	on-event MAIL_EV -> MAIL_STATE
-	on-event RSET_EV -> HELO_STATE
-	on-event VRFY_EV -> HELO_STATE
-	on-event QUIT_EV -> ACCEPT_STATE
+on-event MAIL_EV -> MAIL_STATE
+on-event RSET_EV -> HELO_STATE
+on-event VRFY_EV -> HELO_STATE
+on-event QUIT_EV -> ACCEPT_STATE
 state MAIL_STATE
-	on-event RCPT_EV -> RCPT_STATE
-	on-event RSET_EV -> HELO_STATE
-	on-event VRFY_EV -> MAIL_STATE
-	on-event QUIT_EV -> ACCEPT_STATE
+on-event RCPT_EV -> RCPT_STATE
+on-event RSET_EV -> HELO_STATE
+on-event VRFY_EV -> MAIL_STATE
+on-event QUIT_EV -> ACCEPT_STATE
 state RCPT_STATE
-	on-event DATA_EV -> DATA_STATE
-	on-event RCPT_EV -> RCPT_STATE
-	on-event RSET_EV -> HELO_STATE
-	on-event VRFY_EV -> RCPT_STATE
-	on-event QUIT_EV -> ACCEPT_STATE
+on-event DATA_EV -> DATA_STATE
+on-event RCPT_EV -> RCPT_STATE
+on-event RSET_EV -> HELO_STATE
+on-event VRFY_EV -> RCPT_STATE
+on-event QUIT_EV -> ACCEPT_STATE
 state DATA_STATE
-	on-event DATA_END_EV -> HELO_STATE
+on-event DATA_END_EV -> HELO_STATE
 state ACCEPT_STATE
 
 # -------------------------------------------------------------------

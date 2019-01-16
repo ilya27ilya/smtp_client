@@ -29,6 +29,7 @@ int resv_mes_main(char* queue_name, char* buffer);
 typedef enum child_state
 {
     INIT,
+    READ_MES_STATE,
     EHLO_STATE,
     REC_EHLO,
     MAIL_FROM_STATE,
@@ -48,7 +49,6 @@ typedef enum child_state
 struct string_list {
     char file_name[MAX_FILE_NAME_LEN];
     struct string_list * next;
-    
 };
 
 typedef struct sock_struct{
@@ -56,10 +56,9 @@ typedef struct sock_struct{
     int sock_descr;
     int count_try;
     char domain[MAX_DOMAIN_LEN];
-    //struct string_list message_list;
     char message_list[MAX_MESSAGE_LIST_NAME];
     
-    struct message message;
+    struct message* message;
 } sock_struct;
 
 

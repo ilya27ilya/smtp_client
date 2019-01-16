@@ -77,6 +77,7 @@ int send_message(int sock, struct message* message){
     send_command(sock, MAIL_FROM_COMMAND, message->envelope->sender);
     
     read(sock, buffer, DATA_BUFFER);
+    printf("%s\n",buffer);
     long result_code = strtol(buffer, NULL, 10);
     if (result_code != SUCCESS_OPERATION_CODE)
     {
@@ -187,6 +188,7 @@ int send_command(int sock, int command_type, char* load){
     else if (command_type == MESSAGE_BODY_COMMAND)
     {
         strncpy(command, load, strlen(load));
+        strncat(command, DATA_END, strlen(DATA_END));
     }
     else if(command_type == DATA_END_COMMAND){
         strncpy(command, DATA_END, strlen(DATA_END));
@@ -247,7 +249,7 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
         return -1;
     }
     fcntl(*sock, F_SETFL, O_NONBLOCK);
-    printf("create_sock, fun %d\n",*sock);
+    //printf("create_sock, fun %d\n",*sock);
     return 0;
 }
 
@@ -260,7 +262,7 @@ int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int at
     int connection_established = 0;
     while (i < attempts_number && !connection_established)
     {
-        printf("try to connect... \n");
+        //printf("try to connect... \n");
         int connect_result = connect(sock,(struct sockaddr *)&server, sizeof(server));
         if (connect_result == 0)
         {
@@ -272,7 +274,7 @@ int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int at
         }
         i++;
     }
-    printf("try_con sock %d\n",result);
+    //printf("try_con sock %d\n",result);
     return result;
 }
 
@@ -282,8 +284,8 @@ long read_response(int sock){
     bzero(buffer, DATA_BUFFER);
     
     read(sock, buffer, DATA_BUFFER);
+    
     long result_code = strtol(buffer, NULL, 10);
-
     return result_code;
 }
 
@@ -321,8 +323,9 @@ char* get_mx(char* domain){
         return "localhost";
     else if (strcmp(domain, "gmail.com") == 0)
         return "ALT3.ASPMX.L.GOOGLE.COM.";
+    
     else if (strcmp(domain, "yandex.ru") == 0)
-        return "mx.yandex.net.";
+        return "mx.yandex.ru";
     else if (strcmp(domain, "mail.ru") == 0)
         return "emx.mail.ru.";
     

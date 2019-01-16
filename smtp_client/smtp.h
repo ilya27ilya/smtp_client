@@ -25,7 +25,7 @@
 #include "message.h"
 
 #define PORT 25
-#define DATA_BUFFER 2048
+#define DATA_BUFFER 1048
 #define MY_NAME "smtp_i_client"
 
 #define EHLO "EHLO "

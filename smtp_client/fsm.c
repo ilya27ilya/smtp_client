@@ -12,7 +12,7 @@
 #include "fsm.h"
 
 static int
-_is_mystate_valid(enum mystate n)
+_is_child_state_valid(enum child_state n)
 {
 	if (!(n >= INIT_STATE && n <= ACCEPT_STATE))
 		return -1;
@@ -20,7 +20,7 @@ _is_mystate_valid(enum mystate n)
 }
 
 const char *
-myfsm_state_ntop(enum mystate n)
+smtp_fsm_state_ntop(enum child_state n)
 {
 	const char *state_names[] = {
 		"INIT_STATE",
@@ -31,21 +31,21 @@ myfsm_state_ntop(enum mystate n)
 		"ACCEPT_STATE",
 	};
 
-	if (_is_mystate_valid(n) != 0)
+	if (_is_child_state_valid(n) != 0)
 		return NULL;
 	return state_names[n];
 }
 
 const char *
-myfsm_state_ntop_safe(enum mystate n)
+smtp_fsm_state_ntop_safe(enum child_state n)
 {
-	const char *r = myfsm_state_ntop(n);
+	const char *r = smtp_fsm_state_ntop(n);
 
 	return r == NULL ? "[INVALID]" : r;
 }
 
 static int
-_is_myevent_valid(enum myevent n)
+_is_child_event_valid(enum child_event n)
 {
 	if (!(n >= HELO_EV && n <= DATA_END_EV))
 		return -1;
@@ -53,7 +53,7 @@ _is_myevent_valid(enum myevent n)
 }
 
 const char *
-myfsm_event_ntop(enum myevent n)
+smtp_fsm_event_ntop(enum child_event n)
 {
 	const char *event_names[] = {
 		"HELO_EV",
@@ -67,48 +67,48 @@ myfsm_event_ntop(enum myevent n)
 		"DATA_END_EV",
 	};
 
-	if (_is_myevent_valid(n) != 0)
+	if (_is_child_event_valid(n) != 0)
 		return NULL;
 	return event_names[n];
 }
 
 const char *
-myfsm_event_ntop_safe(enum myevent n)
+smtp_fsm_event_ntop_safe(enum child_event n)
 {
-	const char *r = myfsm_event_ntop(n);
+	const char *r = smtp_fsm_event_ntop(n);
 
 	return r == NULL ? "[INVALID]" : r;
 }
 
 int
-myfsm_init(struct myfsm *fsm, char *errbuf, size_t errlen)
+smtp_fsm_init(struct smtp_fsm *fsm, char *errbuf, size_t errlen)
 {
 	bzero(fsm, sizeof(fsm));
 	fsm->current_state = INIT_STATE;
 	return CFSM_OK;
 }
 
-enum mystate
-myfsm_current(struct myfsm *fsm)
+enum child_state
+smtp_fsm_current(struct smtp_fsm *fsm)
 {
 	return fsm->current_state;
 }
 
-int myfsm_advance(struct myfsm *fsm, enum myevent ev,
+int myfsm_advance(struct smtp_fsm *fsm, enum child_event ev,
     char *errbuf, size_t errlen)
 {
-	enum mystate old_state = fsm->current_state;
-	enum mystate new_state;
+	enum child_state old_state = fsm->current_state;
+	enum child_state new_state;
 
 	/* Sanity check states */
-	if (_is_mystate_valid(fsm->current_state) != 0) {
+	if (_is_child_state_valid(fsm->current_state) != 0) {
 		if (errlen > 0 && errbuf != NULL) {
 			snprintf(errbuf, errlen, "Invalid current_state (%d)",
 			    fsm->current_state);
 		}
 		return CFSM_ERR_INVALID_STATE;
 	}
-	if (_is_myevent_valid(ev) != 0) {
+	if (_is_child_event_valid(ev) != 0) {
 		if (errlen > 0 && errbuf != NULL)
 			snprintf(errbuf, errlen, "Invalid event (%d)", ev);
 		return CFSM_ERR_INVALID_EVENT;
@@ -216,8 +216,8 @@ int myfsm_advance(struct myfsm *fsm, enum myevent ev,
 	if (errlen > 0 && errbuf != NULL) {
 		snprintf(errbuf, errlen,
 		    "Invalid event %s in state %s",
-		    myfsm_event_ntop_safe(ev),
-		    myfsm_state_ntop_safe(fsm->current_state));
+		    smtp_fsm_event_ntop_safe(ev),
+		    smtp_fsm_state_ntop_safe(fsm->current_state));
 	}
 	return CFSM_ERR_INVALID_TRANSITION;
 }

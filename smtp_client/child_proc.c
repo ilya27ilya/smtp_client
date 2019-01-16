@@ -71,6 +71,7 @@ int child_loop(int i, int attempts_number, int attempts_delay){
         if (bytes_read > 0) {
             
             //прочитали сообщение
+            printf("[%s]\n",buffer);
             char* istr = NULL;
             istr = strtok(buffer," ");
             strcat(mes_queue->file_name, istr);
@@ -107,7 +108,7 @@ int child_loop(int i, int attempts_number, int attempts_delay){
                 if(sock_connection[res].sock_descr < 0){
                     strcpy(sock_connection[res].domain,mes_queue->domain);
                     create_socket(get_mx(sock_connection[res].domain), PORT, attempts_number, attempts_delay,&sock_connection[res].sock_descr);
-                    printf("Child proc sock [%d]\n",sock_connection[res].sock_descr);
+                    printf("Child proc sock creation [%d]\n",sock_connection[res].sock_descr);
                 }
                 
                 if(sock_connection[res].sock_descr <= 0){
@@ -119,9 +120,10 @@ int child_loop(int i, int attempts_number, int attempts_delay){
                     if(maxfd<sock_connection[res].sock_descr){
                         maxfd = sock_connection[res].sock_descr;
                         sock_connection[res].state = INIT; //INIT
+                        FD_SET(sock_connection[res].sock_descr, &write_fds);
                     }
                 }
-            }
+            }//создание подключения
             
             strcat(sock_connection[res].message_list,mes_queue->file_name);
             strcat(sock_connection[res].message_list,"@");
