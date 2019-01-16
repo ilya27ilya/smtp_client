@@ -17,21 +17,21 @@
 #define CONNECT 1
 #define REC_CONNECT_INFO 2
 
-#define EHLO_STATE 3
-#define REC_EHLO 4
-#define MAIL_FROM_STATE 5
-#define REC_MAIL_FROM 6
-#define RCPT_TO_STATE 7
-#define REC_RCPT_TO 8
-#define DATA_STATE 9
-#define REC_DATA 10
-#define BODY_STATE 11
-#define REC_BODY 12
-#define DATA_END_STATE 13
-#define REC_DATA_END 14
-#define QUIT_STATE 15
-
-#define ERROR_STATE 16
+//#define EHLO_STATE 3
+//#define REC_EHLO 4
+//#define MAIL_FROM_STATE 5
+//#define REC_MAIL_FROM 6
+//#define RCPT_TO_STATE 7
+//#define REC_RCPT_TO 8
+//#define DATA_STATE 9
+//#define REC_DATA 10
+//#define BODY_STATE 11
+//#define REC_BODY 12
+//#define DATA_END_STATE 13
+//#define REC_DATA_END 14
+//#define QUIT_STATE 15
+//
+//#define ERROR_STATE 16
 
 
 

@@ -24,7 +24,7 @@
 
 #define LOG_QUEUE_NAME "/logging_queue"
 #define LOG_SLEEP_MCS (100)
-#define MAX_LOG_MES_SIZE 1024
+#define MAX_LOG_MES_SIZE 5000
 #define LOG_MSG_STOP "LOGGING STOP"
 #define MAX_MSG_NUM 10
 #define ERROR_LOG "[ERROR] "

@@ -225,12 +225,8 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
     char buffer[DATA_BUFFER];
     bzero(buffer, DATA_BUFFER);
     
-    printf("Try to esteblish connection ");
-    printf("%s\n",host);
-    
     if ((he = gethostbyname(host)) == NULL)
         return -1;
-    
     addr_list = (struct in_addr **) he->h_addr_list;
     
     for(int i = 0; addr_list[i] != NULL && !socket_found; i++)
@@ -247,6 +243,11 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
             socket_found = 1;
         }
     }
+    if(socket_found == 0){
+        return -1;
+    }
+    fcntl(*sock, F_SETFL, O_NONBLOCK);
+    printf("create_sock, fun %d\n",*sock);
     return 0;
 }
 
@@ -259,16 +260,19 @@ int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int at
     int connection_established = 0;
     while (i < attempts_number && !connection_established)
     {
+        printf("try to connect... \n");
         int connect_result = connect(sock,(struct sockaddr *)&server, sizeof(server));
         if (connect_result == 0)
         {
             connection_established = 1;
             result = sock;
         }
-        else
+        else{
             sleep(attempts_delay);
+        }
         i++;
     }
+    printf("try_con sock %d\n",result);
     return result;
 }
 
@@ -281,4 +285,46 @@ long read_response(int sock){
     long result_code = strtol(buffer, NULL, 10);
 
     return result_code;
+}
+
+char* get_mx(char* domain){
+
+//    static char mx_server[512];
+//    u_char mx_buf[512];
+//    ns_msg msg;
+//    ns_rr rr;
+//    int r;
+//
+//    r = res_query(domain, ns_c_any, ns_t_mx, mx_buf, sizeof(mx_buf));
+//    if (r < 0)
+//    {
+//        printf("res q\n");
+//        return NULL;
+//    }
+//    else
+//    {
+//        ns_initparse(mx_buf, r, &msg);
+//        ns_parserr(&msg, ns_s_an, 0, &rr);
+//
+//        const size_t size = NS_MAXDNAME;
+//        unsigned char name[size];
+//        int t = ns_rr_type(rr);
+//
+//        const u_char *data = ns_rr_rdata(rr);
+//        if (t == T_MX)
+//        {
+//            ns_name_unpack(mx_buf, mx_buf + r, data + sizeof(u_int16_t), name, size);
+//            ns_name_ntop(name, mx_server, 4096);
+//        }
+//    }
+    if (strcmp(domain, "localhost.com") == 0)
+        return "localhost";
+    else if (strcmp(domain, "gmail.com") == 0)
+        return "ALT3.ASPMX.L.GOOGLE.COM.";
+    else if (strcmp(domain, "yandex.ru") == 0)
+        return "mx.yandex.net.";
+    else if (strcmp(domain, "mail.ru") == 0)
+        return "emx.mail.ru.";
+    
+    return NULL;
 }

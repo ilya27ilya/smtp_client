@@ -138,10 +138,10 @@
 				3C99B18A21EB3880000ECCE5 /* logging.h */,
 				3CB93900216A0E3A00AA7A65 /* message_list.h */,
 				3CB93901216A0E3A00AA7A65 /* message_list.c */,
-				3C78F0FB21C1517B00D6ACDC /* smtp_fsm.h */,
 				3C99B18721EA04E4000ECCE5 /* list.h */,
 				3C99B18821EA04E4000ECCE5 /* list.c */,
 				3C78F0FC21C1517B00D6ACDC /* smtp_fsm.c */,
+				3C78F0FB21C1517B00D6ACDC /* smtp_fsm.h */,
 				3CB93904216ABD1F00AA7A65 /* read_message.h */,
 				3CB93905216ABD1F00AA7A65 /* read_message.c */,
 				3CB938FA216A0DE000AA7A65 /* message.h */,
@@ -150,8 +150,8 @@
 				3CB938FE216A0E1700AA7A65 /* envelope.c */,
 				3C189CD621985F9700EA8F88 /* maildir.c */,
 				3C189CD521985F9700EA8F88 /* maildir.h */,
-				3C189CDB219864C000EA8F88 /* smtp.h */,
 				3C189CDC219864C000EA8F88 /* smtp.c */,
+				3C189CDB219864C000EA8F88 /* smtp.h */,
 			);
 			path = smtp_client;
 			sourceTree = "<group>";

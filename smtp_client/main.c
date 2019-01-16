@@ -11,6 +11,10 @@
 */
 #include <libconfig.h>
 #include "run.h"
+#include "smtp.h"
+#include "child_proc.h"
+#include "string.h"
+#include "programm_manager.h"
 
 #define ARG_NUM_ERROR -7
 #define ARG_NUM 1
@@ -62,15 +66,52 @@ int main(int argc, const char * argv[]) {
 //        printf("Enter config file\n");
 //        return ARG_NUM_ERROR;
 //    }
+   
+        int result = 0;
+
+//    input_struct input_data;
+//    result = read_config("confl.cfg", &input_data);
+//    if (!result) {
+//        //print_config(input_data);
+//        result = run(input_data);
+//        return result;
+//    }
     
-    input_struct input_data;
-    
-    int result = read_config("confl.cfg", &input_data);
-    if (!result) {
-        //print_config(input_data);
-        result = run(input_data);
-        return result;
+
+
+
+    sock_struct sock_connection[MAX_COUNT_DOMAIN];
+    for(int i = 0; i< MAX_COUNT_DOMAIN;i++){
+        strcat(sock_connection[i].domain,"");
+        sock_connection[i].sock_descr = 0;
+        strcat(sock_connection[i].message_list,"");
     }
+
+    int free_sock_connection = 0;
+    char *filename = "../smtp/1.txt";
+    char *domen  = "yandex.ru";
+
+    if(fork() == 0){
+    int res = -1;
+    for(int i = 0; i<MAX_COUNT_DOMAIN;i++){
+        char* istr = strstr(sock_connection[i].domain,domen);
+        if(istr != NULL){
+            res = i;
+            break;
+        }
+    }
+    if(res == -1){
+        res = free_sock_connection;
+        free_sock_connection+=1;
+        sock_connection[res].state = INIT;
+    }
+    strcat(sock_connection[res].domain,domen);
+    strcat(sock_connection[res].message_list,filename);
+    strcat(sock_connection[res].message_list,"@");
+
     
+        
+    }//конец форка
+
     return result;
 }

@@ -19,6 +19,7 @@
 #include <arpa/inet.h>
 #include <resolv.h>
 #include <fcntl.h>
+#include <arpa/nameser.h> 
 
 
 #include "message.h"
@@ -77,6 +78,6 @@ int create_socket(const char* host, int port, int attempts_number, int attempts_
 int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int attempts_delay);
 int get_response(int sock, int response_code, int state,char* error_message);
 
-
 long read_response(int sock);
+char* get_mx(char* domain);
 #endif /* smtp_h */

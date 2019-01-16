@@ -118,3 +118,4 @@ void file_rename(char* src, char* dest)
         rename(src, dest);
     }
 }
+

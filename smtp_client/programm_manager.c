@@ -19,7 +19,7 @@ int init_manager(input_struct input_data){
     for (int i = 0; i < count; i++) {
         k = fork();
         if (k == 0) {
-            result = child_loop(i);//если передавать i то он будет для этого процесса и в менеджере
+            result = child_loop(i,input_data.attempt_number,input_data.attempt_number);//если передавать i то он будет для этого процесса и в менеджере
             parent = 0;
             break;
         }
@@ -86,7 +86,7 @@ int run_main_loop(input_struct input_data,int* proc){
         else{
             printf("there is now file in new_dir \n");
         }
-        sleep(5);
+        sleep(2);
     }
     free_child_info_array(child_array, proc_number);
     return 0;
