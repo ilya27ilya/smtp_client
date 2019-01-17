@@ -181,3 +181,21 @@ int resv_mes_main(char* queue_name, char* buffer){
     return 1;
 }
 
+
+int child_proc_read(sock_struct *sock_connection){
+    
+    printf("Read message\n");
+    sock_connection->message = read_message(sock_connection->message_list);
+    memset(sock_connection->message_list,0,sizeof(sock_connection->message_list));
+    if (sock_connection->message == NULL) {
+        return 0;
+    }
+    else
+        return 1;
+}
+
+
+int error_func(int *count_try, int attempt_number){
+    *count_try +=1;
+    return (*count_try == attempt_number) ? 0 : 1;
+}

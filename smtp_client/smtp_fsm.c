@@ -8,163 +8,189 @@
 
 #include "smtp_fsm.h"
 
-int smtp_fsm(int state, int sock, struct message* message, int* mess_state){
-//    
-//    long result_code;
-//    
-//    switch (state) {
-//        case START:{
-//            
-//           // state = connect();
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case CONNECT:{
-//            result_code = read_response(sock);
-//            if (result_code == SUCCESS_CONNECTION_CODE) {
-//                state = REC_CONNECT_INFO;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//        case REC_CONNECT_INFO:{
-//            if(mess_state == FULL_MESSAGE){
-//                send_command(sock, EHLO_COMMAND, MY_NAME);
-//                state = EHLO_STATE;
-//                
-//            }
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case EHLO_STATE:{
-//            result_code = read_response(sock);
-//            if (result_code == SUCCESS_OPERATION_CODE) {
-//                state = REC_EHLO;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//        case REC_EHLO:{
-//            send_command(sock, MAIL_FROM_COMMAND, message->envelope->sender);
-//            state = MAIL_FROM_STATE;
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case MAIL_FROM_STATE:{
-//            result_code = read_response(sock);
-//            if (result_code == SUCCESS_OPERATION_CODE) {
-//                state = REC_MAIL_FROM;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//        case REC_MAIL_FROM:{
-//            send_command(sock, RCPT_TO_COMMAND, message->envelope->receiver);
-//            state = RCPT_TO_STATE;
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case RCPT_TO_STATE:{
-//            result_code = read_response(sock);
-//            if (result_code == SUCCESS_OPERATION_CODE) {
-//                state = REC_RCPT_TO;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//        case REC_RCPT_TO:{
-//            send_command(sock, DATA_COMMAND, NULL);
-//            state = DATA_STATE;
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case DATA_STATE:{
-//            result_code = read_response(sock);
-//            if (result_code == START_SEND_MSG_CODE) {
-//                state = REC_DATA;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//        case REC_DATA:{
-//            send_command(sock, MESSAGE_BODY_COMMAND, message->body);
-//            state = BODY_STATE;
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case BODY_STATE:{
-//            result_code = read_response(sock);
-//            if (result_code == START_SEND_MSG_CODE) {
-//                state = REC_BODY;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//        case REC_BODY:{
-//            send_command(sock, DATA_END_COMMAND, NULL);
-//            state = DATA_END_STATE;
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case DATA_END_STATE:{
-//            result_code = read_response(sock);
-//            if (result_code == SUCCESS_DATA_END_CODE) {
-//                state = REC_DATA_END;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//        case REC_DATA_END:{
-//            send_command(sock, QUIT_COMMAND, NULL);
-//            state = QUIT_STATE;
-//            /*
-//             
-//             
-//             */
-//            break;
-//        }
-//        case QUIT_STATE:{
-//            result_code = read_response(sock);
-//            if (result_code == SUCCESS_OPERATION_CODE) {
-//                state = REC_EHLO;
-//                *mess_state = REC_CONNECT_INFO;
-//            } else {
-//                state = ERROR_STATE;
-//            }
-//            break;
-//        }
-//
-//        default:
-//            return -1;
-//    }
-    return state;
+int smtp_myfsm_advance(child_state *state, int ev)
+{
+    
+    /* Event validity checks */
+    switch(*state) {
+        case INIT:
+            switch (ev) {
+                case 1:
+                    *state = EHLO_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case EHLO_STATE:
+            switch (ev) {
+                case 1:
+                    *state = EHLO_REC_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case EHLO_REC_STATE:
+            switch (ev) {
+                case 1:
+                    *state = READ_MES_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case READ_MES_STATE:
+            switch (ev) {
+                case 1:
+                    *state = MAIL_FROM_STATE;
+                    break;
+                case 0:
+                    *state = QUIT_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case QUIT_STATE:
+            switch (ev) {
+                case 1:
+                    *state = QUIT_REC_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case QUIT_REC_STATE:
+            switch (ev) {
+                case 1:
+                    *state = EHLO_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case MAIL_FROM_STATE:
+            switch (ev) {
+                case 1:
+                    *state = MAIL_FROM_STATE_REC;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case MAIL_FROM_STATE_REC:
+            switch (ev) {
+                case 1:
+                    *state = RCPT_TO_STATE;
+                    break;
+                case 0:
+                    *state = ERROR_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case RCPT_TO_STATE:
+            switch (ev) {
+                case 1:
+                    *state = RCPT_TO_STATE_REC;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case RCPT_TO_STATE_REC:
+            switch (ev) {
+                case 1:
+                    *state = DATA_STATE;
+                    break;
+                case 0:
+                    *state = ERROR_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case DATA_STATE:
+            switch (ev) {
+                case 1:
+                    *state = DATA_REC_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case DATA_REC_STATE:
+            switch (ev) {
+                case 1:
+                    *state = BODDY_STATE;
+                    break;
+                case 0:
+                    *state = ERROR_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case BODDY_STATE:
+            switch (ev) {
+                case 1:
+                    *state = BODDY_REC_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case BODDY_REC_STATE:
+            switch (ev) {
+                case 1:
+                    *state = READ_MES_STATE;
+                    break;
+                case 0:
+                    *state = ERROR_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case ERROR_STATE:
+            switch (ev) {
+                case 1:
+                    *state = RSET_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case RSET_STATE:
+            switch (ev) {
+                case 1:
+                    *state = RSET_REC_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        case RSET_REC_STATE:
+            switch (ev) {
+                case 1:
+                    *state = MAIL_FROM_STATE;
+                    break;
+                default:
+                    goto bad_event;
+            }
+            break;
+        default:
+            goto bad_event;
+    }
+    
+    
+    /* Switch state now */
+    
+    return CFSM_OK;
+    
+bad_event:
+    return CFSM_ERR_INVALID_TRANSITION;
 }
 

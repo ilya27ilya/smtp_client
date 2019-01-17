@@ -140,7 +140,7 @@ int send_message(int sock, struct message* message){
 //
 //
 //    printf("Send DATA END command\n");
-    SMTP.state = DATA_END_COMMAND;
+ //   SMTP.state = DATA_END_COMMAND;
 //    send_command(sock, DATA_END_COMMAND, NULL);
 //
 //    bzero(buffer, DATA_BUFFER);
@@ -160,45 +160,54 @@ int send_message(int sock, struct message* message){
 }
 
 
-int send_command(int sock, int command_type, char* load){
+int send_command(int sock, child_state command_type, char* load){
     char command[DATA_BUFFER];
     bzero(command, DATA_BUFFER);
     
-    if(command_type == EHLO_COMMAND)
+    if(command_type == EHLO_STATE)
     {
         strncpy(command, EHLO, strlen(EHLO));
         strcat(command, load);
+        printf("\nSend command EHLO");
         
     }
-    else if (command_type == MAIL_FROM_COMMAND){
+    else if (command_type == MAIL_FROM_STATE){
         strncpy(command, MAIL_FROM, strlen(MAIL_FROM));
         strcat(command, OPEN_BRACKET);
         strcat(command, load);
         strcat(command, CLOSE_BRACKET);
+        printf("Send command MAIL_FROM");
     }
-    else if (command_type == RCPT_TO_COMMAND){
+    else if (command_type == RCPT_TO_STATE){
         strncpy(command, RCPT_TO, strlen(RCPT_TO));
         strcat(command, OPEN_BRACKET);
         strcat(command, load);
         strcat(command, CLOSE_BRACKET);
+        printf("Send command RCPT_TO");
     }
-    else if(command_type == DATA_COMMAND){
+    else if(command_type == DATA_STATE){
         strncpy(command, DATA, strlen(DATA));
+        printf("Send command DATA");
     }
-    else if (command_type == MESSAGE_BODY_COMMAND)
+    else if (command_type == BODDY_STATE)
     {
         strncpy(command, load, strlen(load));
         strncat(command, DATA_END, strlen(DATA_END));
+        printf("Send command BODY");
     }
-    else if(command_type == DATA_END_COMMAND){
-        strncpy(command, DATA_END, strlen(DATA_END));
+    else if(command_type == RSET_STATE){
+        strncpy(command, RSET, strlen(RSET));
+        printf("Send command RSET");
     }
-    else if(command_type == QUIT_COMMAND){
+    else if(command_type == QUIT_STATE){
         strncpy(command, QUIT, strlen(QUIT));
+        printf("Send command QUIT");
     }
     
     strcat(command, TERN);
-    return write(sock, command, strlen(command));
+    long a = write(sock, command, strlen(command));
+    printf(" %lu  ",a);
+    return (a > 0) ? 1 : 0;
 }
 
 int get_response(int sock, int response_code, int state,char* error_message){
@@ -284,9 +293,23 @@ long read_response(int sock){
     bzero(buffer, DATA_BUFFER);
     
     read(sock, buffer, DATA_BUFFER);
-    
     long result_code = strtol(buffer, NULL, 10);
-    return result_code;
+    //printf("%s\n",buffer);
+    printf("READ code %lu \n",result_code);
+    
+    return ((result_code == SUCCESS_EHLO_CODE) || (result_code == SUCCESS_OPERATION_CODE) || (result_code == SUCCESS_QUIT_CODE) || (result_code == SUCCESS_DATA_SEND_CODE)) ? 1:0;
+}
+
+long read_ehlo(int sock){
+    char buffer[DATA_BUFFER];
+    bzero(buffer, DATA_BUFFER);
+    
+    read(sock, buffer, DATA_BUFFER);
+    long result_code = strtol(buffer, NULL, 10);
+    printf("%s\n",buffer);
+    
+    
+    return ((result_code == SUCCESS_EHLO_CODE) || (result_code == SUCCESS_OPERATION_CODE) || (result_code == SUCCESS_QUIT_CODE) || (result_code == SUCCESS_DATA_SEND_CODE)) ? 1:0;
 }
 
 char* get_mx(char* domain){

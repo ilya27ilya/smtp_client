@@ -14,7 +14,7 @@
 static int
 _is_child_state_valid(enum child_state n)
 {
-	if (!(n >= INIT_STATE && n <= ACCEPT_STATE))
+	if (!(n >= INIT && n <= RSET_REC_STATE))
 		return -1;
 	return 0;
 }
@@ -23,12 +23,23 @@ const char *
 smtp_fsm_state_ntop(enum child_state n)
 {
 	const char *state_names[] = {
-		"INIT_STATE",
-		"HELO_STATE",
-		"MAIL_STATE",
-		"RCPT_STATE",
+		"INIT",
+		"EHLO_STATE",
+		"EHLO_REC_STATE",
+		"READ_MES_STATE",
+		"QUIT_STATE",
+		"QUIT_REC_STATE",
+		"MAIL_FROM_STATE",
+		"MAIL_FROM_STATE_REC",
+		"RCPT_TO_STATE",
+		"RCPT_TO_STATE_REC",
 		"DATA_STATE",
-		"ACCEPT_STATE",
+		"DATA_REC_STATE",
+		"BODDY_STATE",
+		"BODDY_REC_STATE",
+		"ERROR_STATE",
+		"RSET_STATE",
+		"RSET_REC_STATE",
 	};
 
 	if (_is_child_state_valid(n) != 0)
@@ -47,7 +58,7 @@ smtp_fsm_state_ntop_safe(enum child_state n)
 static int
 _is_child_event_valid(enum child_event n)
 {
-	if (!(n >= HELO_EV && n <= DATA_END_EV))
+	if (!(n >= AAA && n <= BBB))
 		return -1;
 	return 0;
 }
@@ -56,15 +67,8 @@ const char *
 smtp_fsm_event_ntop(enum child_event n)
 {
 	const char *event_names[] = {
-		"HELO_EV",
-		"EHLO_EV",
-		"RSET_EV",
-		"VRFY_EV",
-		"QUIT_EV",
-		"MAIL_EV",
-		"RCPT_EV",
-		"DATA_EV",
-		"DATA_END_EV",
+		"AAA",
+		"BBB",
 	};
 
 	if (_is_child_event_valid(n) != 0)
@@ -84,7 +88,7 @@ int
 smtp_fsm_init(struct smtp_fsm *fsm, char *errbuf, size_t errlen)
 {
 	bzero(fsm, sizeof(fsm));
-	fsm->current_state = INIT_STATE;
+	fsm->current_state = INIT;
 	return CFSM_OK;
 }
 
@@ -116,79 +120,100 @@ int myfsm_advance(struct smtp_fsm *fsm, enum child_event ev,
 
 	/* Event validity checks */
 	switch(old_state) {
-	case INIT_STATE:
+	case INIT:
 		switch (ev) {
-		case HELO_EV:
-			new_state = HELO_STATE;
-			break;
-		case EHLO_EV:
-			new_state = HELO_STATE;
-			break;
-		case RSET_EV:
-			new_state = INIT_STATE;
-			break;
-		case VRFY_EV:
-			new_state = INIT_STATE;
-			break;
-		case QUIT_EV:
-			new_state = ACCEPT_STATE;
+		case AAA:
+			new_state = EHLO_STATE;
 			break;
 		default:
 			goto bad_event;
 		}
 		break;
-	case HELO_STATE:
+	case EHLO_STATE:
 		switch (ev) {
-		case MAIL_EV:
-			new_state = MAIL_STATE;
-			break;
-		case RSET_EV:
-			new_state = HELO_STATE;
-			break;
-		case VRFY_EV:
-			new_state = HELO_STATE;
-			break;
-		case QUIT_EV:
-			new_state = ACCEPT_STATE;
+		case AAA:
+			new_state = EHLO_REC_STATE;
 			break;
 		default:
 			goto bad_event;
 		}
 		break;
-	case MAIL_STATE:
+	case EHLO_REC_STATE:
 		switch (ev) {
-		case RCPT_EV:
-			new_state = RCPT_STATE;
-			break;
-		case RSET_EV:
-			new_state = HELO_STATE;
-			break;
-		case VRFY_EV:
-			new_state = MAIL_STATE;
-			break;
-		case QUIT_EV:
-			new_state = ACCEPT_STATE;
+		case AAA:
+			new_state = READ_MES_STATE;
 			break;
 		default:
 			goto bad_event;
 		}
 		break;
-	case RCPT_STATE:
+	case READ_MES_STATE:
 		switch (ev) {
-		case DATA_EV:
+		case AAA:
+			new_state = MAIL_FROM_STATE;
+			break;
+		case BBB:
+			new_state = QUIT_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case QUIT_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = QUIT_REC_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case QUIT_REC_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = EHLO_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case MAIL_FROM_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = MAIL_FROM_STATE_REC;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case MAIL_FROM_STATE_REC:
+		switch (ev) {
+		case AAA:
+			new_state = RCPT_TO_STATE;
+			break;
+		case BBB:
+			new_state = ERROR_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case RCPT_TO_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = RCPT_TO_STATE_REC;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case RCPT_TO_STATE_REC:
+		switch (ev) {
+		case AAA:
 			new_state = DATA_STATE;
 			break;
-		case RCPT_EV:
-			new_state = RCPT_STATE;
-			break;
-		case RSET_EV:
-			new_state = HELO_STATE;
-			break;
-		case VRFY_EV:
-			new_state = RCPT_STATE;
-			break;
-		case QUIT_EV:
-			new_state = ACCEPT_STATE;
+		case BBB:
+			new_state = ERROR_STATE;
 			break;
 		default:
 			goto bad_event;
@@ -196,15 +221,73 @@ int myfsm_advance(struct smtp_fsm *fsm, enum child_event ev,
 		break;
 	case DATA_STATE:
 		switch (ev) {
-		case DATA_END_EV:
-			new_state = HELO_STATE;
+		case AAA:
+			new_state = DATA_REC_STATE;
 			break;
 		default:
 			goto bad_event;
 		}
 		break;
-	case ACCEPT_STATE:
-		goto bad_event;
+	case DATA_REC_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = BODDY_STATE;
+			break;
+		case BBB:
+			new_state = ERROR_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case BODDY_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = BODDY_REC_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case BODDY_REC_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = READ_MES_STATE;
+			break;
+		case BBB:
+			new_state = ERROR_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case ERROR_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = RSET_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case RSET_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = RSET_REC_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
+	case RSET_REC_STATE:
+		switch (ev) {
+		case AAA:
+			new_state = MAIL_FROM_STATE;
+			break;
+		default:
+			goto bad_event;
+		}
+		break;
 	}
 
 	/* Switch state now */
@@ -213,11 +296,5 @@ int myfsm_advance(struct smtp_fsm *fsm, enum child_event ev,
 	return CFSM_OK;
 
  bad_event:
-	if (errlen > 0 && errbuf != NULL) {
-		snprintf(errbuf, errlen,
-		    "Invalid event %s in state %s",
-		    smtp_fsm_event_ntop_safe(ev),
-		    smtp_fsm_state_ntop_safe(fsm->current_state));
-	}
 	return CFSM_ERR_INVALID_TRANSITION;
 }

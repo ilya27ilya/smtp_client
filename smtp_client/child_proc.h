@@ -17,6 +17,7 @@
 #include "message.h"
 #include "read_message.h"
 #include "smtp.h"
+#include "smtp_fsm.h"
 
 #define MAX_MESSAGE_LIST_NAME 2048
 
@@ -26,25 +27,25 @@ int resv_mes_main(char* queue_name, char* buffer);
 
 //void process_mail_domain(int maxfd, struct mail_domain_dscrptr *cur_mail_domain,
 
-typedef enum child_state
-{
-    INIT,
-    READ_MES_STATE,
-    EHLO_STATE,
-    REC_EHLO,
-    MAIL_FROM_STATE,
-    REC_MAIL_FROM,
-    RCPT_TO_STATE,
-    REC_RCPT_TO,
-    DATA_STATE,
-    REC_DATA,
-    BODY_STATE,
-    REC_BODY,
-    DATA_END_STATE,
-    REC_DATA_END,
-    QUIT_STATE,
-    ERROR_STATE,
-}child_state;
+//typedef enum child_state
+//{
+//    INIT,
+//    READ_MES_STATE,
+//    EHLO_STATE,
+//    REC_EHLO,
+//    MAIL_FROM_STATE,
+//    REC_MAIL_FROM,
+//    RCPT_TO_STATE,
+//    REC_RCPT_TO,
+//    DATA_STATE,
+//    REC_DATA,
+//    BODY_STATE,
+//    REC_BODY,
+//    DATA_END_STATE,
+//    REC_DATA_END,
+//    QUIT_STATE,
+//    ERROR_STATE,
+//}child_state;
 
 struct string_list {
     char file_name[MAX_FILE_NAME_LEN];
@@ -61,5 +62,7 @@ typedef struct sock_struct{
     struct message* message;
 } sock_struct;
 
+int child_proc_read(sock_struct *sock_connection);
+int error_func(int *count_try, int attempt_number);
 
 #endif /* child_proc_h */

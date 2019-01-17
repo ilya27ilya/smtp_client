@@ -12,27 +12,31 @@
  * The valid states of the FSM
  */
 enum child_state {
-	INIT_STATE,
-	HELO_STATE,
-	MAIL_STATE,
-	RCPT_STATE,
+	INIT,
+	EHLO_STATE,
+	EHLO_REC_STATE,
+	READ_MES_STATE,
+	QUIT_STATE,
+	QUIT_REC_STATE,
+	MAIL_FROM_STATE,
+	MAIL_FROM_STATE_REC,
+	RCPT_TO_STATE,
+	RCPT_TO_STATE_REC,
 	DATA_STATE,
-	ACCEPT_STATE,
+	DATA_REC_STATE,
+	BODDY_STATE,
+	BODDY_REC_STATE,
+	ERROR_STATE,
+	RSET_STATE,
+	RSET_REC_STATE,
 };
 
 /*
  * Events that may cause state transitions in the FSM
  */
 enum child_event {
-	HELO_EV,
-	EHLO_EV,
-	RSET_EV,
-	VRFY_EV,
-	QUIT_EV,
-	MAIL_EV,
-	RCPT_EV,
-	DATA_EV,
-	DATA_END_EV,
+	AAA,
+	BBB,
 };
 
 /*
@@ -56,7 +60,7 @@ struct smtp_fsm {
 #endif /* CFSM_OK */
 
 /*
- * Initialise a FSM and set its starting state to INIT_STATE
+ * Initialise a FSM and set its starting state to INIT
  * Will return 0 on success or a CFSM_ERR_* code on failure. 
  * If "errbuf" is not NULL, upto "errlen" bytes of error message
  * will be copied into "errbuf" on failure.
