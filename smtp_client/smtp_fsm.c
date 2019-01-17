@@ -64,7 +64,7 @@ int smtp_myfsm_advance(child_state *state, int ev)
         case QUIT_REC_STATE:
             switch (ev) {
                 case 1:
-                    *state = EHLO_STATE;
+                    //*state = EHLO_STATE;
                     break;
                 default:
                     goto bad_event;
@@ -158,6 +158,9 @@ int smtp_myfsm_advance(child_state *state, int ev)
             switch (ev) {
                 case 1:
                     *state = RSET_STATE;
+                    break;
+                case 0:
+                    *state = READ_MES_STATE;
                     break;
                 default:
                     goto bad_event;

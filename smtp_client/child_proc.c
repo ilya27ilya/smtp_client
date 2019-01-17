@@ -67,11 +67,17 @@ int child_loop(int i, int attempts_number, int attempts_delay){
         struct file_list *mes_queue = NULL;
         mes_queue = (struct file_list *)malloc(sizeof(struct file_list));
         
+
+        
+        
         //Когда получили сообщение
         if (bytes_read > 0) {
             
             //прочитали сообщение
-            printf("[%s]\n",buffer);
+            memset(mes_queue->domain, 0, sizeof(mes_queue->domain));
+            memset(mes_queue->file_name, 0, sizeof(mes_queue->file_name));
+            write_log(INFO_LOG, "Get mess adr: [%s] domain: [%s]",mes_queue->file_name, mes_queue->domain);
+            
             char* istr = NULL;
             istr = strtok(buffer," ");
             strcat(mes_queue->file_name, istr);
@@ -79,10 +85,12 @@ int child_loop(int i, int attempts_number, int attempts_delay){
             strcat(mes_queue->domain, istr);
             write_log(INFO_LOG, "Get mess adr: [%s] domain: [%s]",mes_queue->file_name, mes_queue->domain);
             
+
             
             //если в списке доменов нет полученого, то добавили
             if(strstr(child.child_data.domain, mes_queue->domain) == NULL)
                 strcpy(child.child_data.domain,mes_queue->domain);
+            
 
             //определяем какому сокету отправить сообщение
             int res = -1;
@@ -138,25 +146,99 @@ int child_loop(int i, int attempts_number, int attempts_delay){
             
         }//завершили прием сообщения
         
+        if(child.child_data.connection > 0){
+        select(maxfd + 1, &read_fds, &write_fds, NULL, NULL);
+        for (int i = 0; i < MAX_COUNT_DOMAIN; i++)
+        {
+                int result_code = -1;
+                int a = -1;
+                int smtp_fsm_res = -1;
+
+                if(sock_connection[i].sock_descr > 2){
+                    if (FD_ISSET(sock_connection[i].sock_descr, &read_fds)){
+                        child_state old_state = sock_connection[i].state;
+                        result_code = read_response(sock_connection[i].sock_descr);
+
+                        if(sock_connection[i].state == QUIT_REC_STATE){
+                            result_code = close_socket(sock_connection[i].sock_descr,&read_fds);
+                            break;
+                        }
+
+                        smtp_fsm_res = smtp_myfsm_advance(&sock_connection[i].state,result_code);
+
+                        //сообщение отправлено
+                        if((smtp_fsm_res == 0) && (sock_connection[i].state == READ_MES_STATE) && (old_state == BODDY_REC_STATE)){
+
+                            //printf("FREE message\n");
+                            free_message(sock_connection[i].message);
+                            sock_connection[i].message = NULL;
+                            sock_connection[i].count_try = 0;
+                        }
+
+                        if(smtp_fsm_res<0)
+                            return -1;
+                        else{
+                            FD_CLR(sock_connection[i].sock_descr, &read_fds);
+                            FD_SET(sock_connection[i].sock_descr, &write_fds);
+                        }
+                    }
+
+                    //писатели
+                    if (FD_ISSET(sock_connection[i].sock_descr, &write_fds)){
+                        
+                        if(sock_connection[i].state == ERROR_STATE){
+                            int er = error_func(&sock_connection[i].count_try, attempts_number);
+                            smtp_fsm_res = smtp_myfsm_advance(&sock_connection[i].state,er);
+                            if(smtp_fsm_res<0)
+                                return -1;
+                        }
+                        if(sock_connection[i].state == INIT){
+                            smtp_fsm_res = smtp_myfsm_advance(&sock_connection[i].state,1);
+                            if(smtp_fsm_res<0)
+                                return -1;
+                        }
+                        if(sock_connection[i].state == READ_MES_STATE){
+
+                            int read = child_proc_read(&sock_connection[i]);
+                            smtp_fsm_res = smtp_myfsm_advance(&sock_connection[i].state,read);
+                            if(smtp_fsm_res<0)
+                                return -1;
+                        }
+ 
+                        if(sock_connection[i].state == EHLO_STATE)
+                            a = send_command(sock_connection[i].sock_descr, EHLO_STATE, MY_NAME);
+                        if(sock_connection[i].state == MAIL_FROM_STATE)
+                            a = send_command(sock_connection[i].sock_descr, MAIL_FROM_STATE, sock_connection[i].message->envelope->sender);
+                        if(sock_connection[i].state == RCPT_TO_STATE)
+                            a = send_command(sock_connection[i].sock_descr, RCPT_TO_STATE, sock_connection[i].message->envelope->receiver);
+                        if(sock_connection[i].state == DATA_STATE)
+                            a = send_command(sock_connection[i].sock_descr, DATA_STATE, NULL);
+                        if(sock_connection[i].state == BODDY_STATE)
+                            a = send_command(sock_connection[i].sock_descr, BODDY_STATE, sock_connection[i].message->body);
+                        if(sock_connection[i].state == RSET_STATE)
+                            a = send_command(sock_connection[i].sock_descr, RSET_STATE, NULL);
+
+                        if(sock_connection[i].state == QUIT_STATE){
+                            a = send_command(sock_connection[i].sock_descr, QUIT_STATE, NULL);
+                            memset(sock_connection[i].domain, 0, sizeof(sock_connection[i].domain));
+                        }
+
+                        smtp_fsm_res = smtp_myfsm_advance(&sock_connection[i].state,a);
+
+                        if(smtp_fsm_res<0)
+                            return -1;
+                        else{
+                            FD_CLR(sock_connection[i].sock_descr, &write_fds);
+                            FD_SET(sock_connection[i].sock_descr, &read_fds);
+                        }
+                    }
+
+            }
+        }//select цикл по сокетам
+        }//end if
         
-//        int act = select(maxfd + 1, &read_fds, &write_fds, NULL, NULL);
-//        for (int i = 0; i < MAX_COUNT_DOMAIN; i++)
-//        {
-//            if(sock_connection[i].sock_descr > 2){
-//                if (FD_ISSET(sock_connection[i].sock_descr, &read_fds)){
-//                    //socket_work(sock_connection[i],READ,&read_fds, &write_fds,attempt_number);
-//                }
-//                if (FD_ISSET(sock_connection[i].sock_descr, &write_fds)){
-//                    //socket_work(sock_connection[i],WRITE,&read_fds, &write_fds,attempt_number);
-//                }
-//
-//            }
-//
-//        }
         
-        
-        
-        //sleep(1);
+        sleep(1);
     }
     
 
@@ -183,10 +265,34 @@ int resv_mes_main(char* queue_name, char* buffer){
 
 
 int child_proc_read(sock_struct *sock_connection){
+    if(strcmp(sock_connection->message_list,"")==0){
+        return 0;
+    }
+
+    int ch = '@';
+    char *beg = strchr(sock_connection->message_list,ch);
     
-    printf("Read message\n");
-    sock_connection->message = read_message(sock_connection->message_list);
-    memset(sock_connection->message_list,0,sizeof(sock_connection->message_list));
+    char filename[BUFFER_SIZE];
+    char last_list[BUFFER_SIZE];
+    memset(filename, 0, BUFFER_SIZE);
+    memset(last_list, 0, BUFFER_SIZE);
+    
+    long len = strlen(sock_connection->message_list);
+    
+    for(int i = 0; i<beg - sock_connection->message_list;i++){
+        filename[i] = sock_connection->message_list[i];
+    }
+    
+    
+    for (long i = beg - sock_connection->message_list+1; i<len; i++) {
+        last_list[i-(beg - sock_connection->message_list+1)] = sock_connection->message_list[i];
+    }
+    
+    sock_connection->message = read_message(filename);
+    memset(sock_connection->message_list, 0, sizeof(sock_connection->message_list));
+    strcat(sock_connection->message_list, last_list);
+    
+    
     if (sock_connection->message == NULL) {
         return 0;
     }
@@ -198,4 +304,9 @@ int child_proc_read(sock_struct *sock_connection){
 int error_func(int *count_try, int attempt_number){
     *count_try +=1;
     return (*count_try == attempt_number) ? 0 : 1;
+}
+
+int close_socket(int socket, fd_set *read_fds){
+    FD_CLR(socket,read_fds);
+    return (close(socket) == 0) ? 1:0;
 }

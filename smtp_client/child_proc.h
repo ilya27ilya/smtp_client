@@ -64,5 +64,6 @@ typedef struct sock_struct{
 
 int child_proc_read(sock_struct *sock_connection);
 int error_func(int *count_try, int attempt_number);
+int close_socket(int socket, fd_set *read_fds);
 
 #endif /* child_proc_h */
