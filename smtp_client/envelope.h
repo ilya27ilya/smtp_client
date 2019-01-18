@@ -14,13 +14,14 @@
 #include <string.h>
 
 struct message_envelope {
-    char*   sender;
-    char*   receiver;
-    char*   subject;
-    char*   date;
+  char *sender;
+  char *receiver;
+  char *subject;
+  char *date;
 };
 
-struct message_envelope* create_envelope(char* sender, char* receiver, char* subject, char* date);
-void free_envelope(struct message_envelope* envelope);
+struct message_envelope *create_envelope(char *sender, char *receiver,
+                                         char *subject, char *date);
+void free_envelope(struct message_envelope *envelope);
 
 #endif /* envelope_h */

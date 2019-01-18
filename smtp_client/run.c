@@ -8,18 +8,14 @@
 
 #include "run.h"
 
-
-int run(input_struct input_data){
-    int result = 0;
-    if (fork() == 0){
-        result = logging_loop(input_data.logger_name);
-    }
-    else{
-        write_log(INFO_LOG, "START SMTP CLIENT");
-        result = init_manager(input_data);
-    }
-    //printf("%s",input_data.logger_name);
-    return result;
+int run(input_struct input_data) {
+  int result = 0;
+  if (fork() == 0) {
+    result = logging_loop(input_data.logger_name);
+  } else {
+    write_log(INFO_LOG, "START SMTP CLIENT");
+    result = init_manager(input_data);
+  }
+  // printf("%s",input_data.logger_name);
+  return result;
 }
-
-

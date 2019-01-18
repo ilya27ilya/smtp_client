@@ -9,19 +9,18 @@
 #ifndef smtp_h
 #define smtp_h
 
-#include <stdio.h>
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <string.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <resolv.h>
-#include <fcntl.h>
-#include <arpa/nameser.h>
 #include "smtp_fsm.h"
-
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <resolv.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
 #include "message.h"
 
@@ -42,7 +41,6 @@
 
 #define CONNECTED_ERROR "Error in conection response"
 
-
 #define INIT_STATE_SMTP 7
 #define CONNECTED 8
 #define EHLO_COMMAND 0
@@ -54,35 +52,17 @@
 #define QUIT_COMMAND 6
 #define ERROR_COMAND 10
 
-
 #define SUCCESS_EHLO_CODE 220
 #define SUCCESS_OPERATION_CODE 250
 #define SUCCESS_DATA_SEND_CODE 354
 #define SUCCESS_QUIT_CODE 221
 
-
-//структура
-struct SMTP {
-    int state;
-};
-
-//отправить письмо
-//создание команды
-
-int end_send_messages_high(int sock);
-int begin_send_messages_high(int sock);
-
-int send_command(int sock, child_state command_type, char* load);
-
-int send_message(int sock, struct message* message);
-
-int create_socket(const char* host, int port, int attempts_number, int attempts_delay,int* sock);
-
-int try_connect_to_socket(struct sockaddr_in server, int attempts_number, int attempts_delay);
-int get_response(int sock, int response_code, int state,char* error_message);
-
+int send_command(int sock, child_state command_type, char *load);
+int create_socket(const char *host, int port, int attempts_number,
+                  int attempts_delay, int *sock);
+int try_connect_to_socket(struct sockaddr_in server, int attempts_number,
+                          int attempts_delay);
 long read_response(int sock);
-char* get_mx(char* domain);
+char *get_mx(char *domain);
 
-long read_ehlo(int sock);
 #endif /* smtp_h */

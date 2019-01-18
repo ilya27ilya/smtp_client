@@ -9,15 +9,14 @@
 #ifndef read_message_h
 #define read_message_h
 
-#include <stdio.h>
 #include "message.h"
-
+#include <stdio.h>
 
 #define BUFFER_SIZE 500
 #define BODY_SIZE 1000
 #define ENVELOPE_SIZE 500
 
-struct message* read_message(char* filename);
-char* slice(char* str);
-char* slice_reg(char* str);
+struct message *read_message(char *filename);
+char *slice(char *str);
+char *slice_reg(char *str);
 #endif /* read_message_h */

@@ -12,11 +12,10 @@
 #include <stdio.h>
 
 //#include <sys/types>
-#include <unistd.h>
 #include "input_struct.h"
 #include "logging.h"
 #include "programm_manager.h"
-
+#include <unistd.h>
 
 int run(input_struct input_data);
 

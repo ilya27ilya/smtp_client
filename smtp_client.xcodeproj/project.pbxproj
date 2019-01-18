@@ -12,7 +12,6 @@
 		3C189CDD219864C000EA8F88 /* smtp.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C189CDC219864C000EA8F88 /* smtp.c */; };
 		3C308883219F0A6500A849C7 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C308882219F0A6500A849C7 /* CoreServices.framework */; };
 		3C78F0FD21C1517B00D6ACDC /* smtp_fsm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C78F0FC21C1517B00D6ACDC /* smtp_fsm.c */; };
-		3C99B18921EA04E4000ECCE5 /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18821EA04E4000ECCE5 /* list.c */; };
 		3C99B18C21EB3880000ECCE5 /* logging.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18B21EB3880000ECCE5 /* logging.c */; };
 		3C99B18F21EB3C9E000ECCE5 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = 3C99B18E21EB3C9E000ECCE5 /* Makefile */; };
 		3CA4AB5821EBD1B0007D902B /* confl.cfg in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4AB5721EBD1B0007D902B /* confl.cfg */; };
@@ -25,6 +24,9 @@
 		3CB938FF216A0E1700AA7A65 /* envelope.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB938FE216A0E1700AA7A65 /* envelope.c */; };
 		3CB93902216A0E3A00AA7A65 /* message_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB93901216A0E3A00AA7A65 /* message_list.c */; };
 		3CB93906216ABD1F00AA7A65 /* read_message.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CB93905216ABD1F00AA7A65 /* read_message.c */; };
+		3CBFB4E221F252FC005906A9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFB4E121F252FC005906A9 /* main.c */; };
+		3CBFB4E521F25337005906A9 /* test_smtp.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFB4E421F25337005906A9 /* test_smtp.c */; };
+		3CBFB4E821F2538E005906A9 /* test_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 3CBFB4E721F2538E005906A9 /* test_utils.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,8 +52,6 @@
 		3C78F0FB21C1517B00D6ACDC /* smtp_fsm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = smtp_fsm.h; sourceTree = "<group>"; };
 		3C78F0FC21C1517B00D6ACDC /* smtp_fsm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = smtp_fsm.c; sourceTree = "<group>"; };
 		3C99B18321E9FCD1000ECCE5 /* input_struct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = input_struct.h; sourceTree = "<group>"; };
-		3C99B18721EA04E4000ECCE5 /* list.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
-		3C99B18821EA04E4000ECCE5 /* list.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = list.c; sourceTree = "<group>"; };
 		3C99B18A21EB3880000ECCE5 /* logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		3C99B18B21EB3880000ECCE5 /* logging.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = logging.c; sourceTree = "<group>"; };
 		3C99B18E21EB3C9E000ECCE5 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -76,6 +76,11 @@
 		3CB93904216ABD1F00AA7A65 /* read_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = read_message.h; sourceTree = "<group>"; };
 		3CB93905216ABD1F00AA7A65 /* read_message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = read_message.c; sourceTree = "<group>"; };
 		3CBFB4DF21ED9C21005906A9 /* child_struct.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = child_struct.h; sourceTree = "<group>"; };
+		3CBFB4E121F252FC005906A9 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		3CBFB4E321F25337005906A9 /* test_smtp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_smtp.h; sourceTree = "<group>"; };
+		3CBFB4E421F25337005906A9 /* test_smtp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_smtp.c; sourceTree = "<group>"; };
+		3CBFB4E621F2538E005906A9 /* test_utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test_utils.h; sourceTree = "<group>"; };
+		3CBFB4E721F2538E005906A9 /* test_utils.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test_utils.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +123,7 @@
 		3CB938F2216A07B400AA7A65 /* smtp_client */ = {
 			isa = PBXGroup;
 			children = (
+				3CBFB4E021F252A3005906A9 /* test */,
 				3C99B18E21EB3C9E000ECCE5 /* Makefile */,
 				3CB938F3216A07B400AA7A65 /* main.c */,
 				3CA4AB5F21ECEBF3007D902B /* run.c */,
@@ -140,8 +146,6 @@
 				3C99B18A21EB3880000ECCE5 /* logging.h */,
 				3CB93900216A0E3A00AA7A65 /* message_list.h */,
 				3CB93901216A0E3A00AA7A65 /* message_list.c */,
-				3C99B18721EA04E4000ECCE5 /* list.h */,
-				3C99B18821EA04E4000ECCE5 /* list.c */,
 				3CB93904216ABD1F00AA7A65 /* read_message.h */,
 				3CB93905216ABD1F00AA7A65 /* read_message.c */,
 				3CB938FA216A0DE000AA7A65 /* message.h */,
@@ -154,6 +158,18 @@
 				3C189CDB219864C000EA8F88 /* smtp.h */,
 			);
 			path = smtp_client;
+			sourceTree = "<group>";
+		};
+		3CBFB4E021F252A3005906A9 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				3CBFB4E121F252FC005906A9 /* main.c */,
+				3CBFB4E621F2538E005906A9 /* test_utils.h */,
+				3CBFB4E721F2538E005906A9 /* test_utils.c */,
+				3CBFB4E321F25337005906A9 /* test_smtp.h */,
+				3CBFB4E421F25337005906A9 /* test_smtp.c */,
+			);
+			path = test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,13 +233,15 @@
 				3CA4AB5C21ECC412007D902B /* fsm.c in Sources */,
 				3C00BFA121ED9613008BC18E /* child_proc.c in Sources */,
 				3CA4AB6021ECEBF3007D902B /* run.c in Sources */,
+				3CBFB4E821F2538E005906A9 /* test_utils.c in Sources */,
 				3CA4AB6321ED4922007D902B /* main_proc.c in Sources */,
 				3C189CD721985F9700EA8F88 /* maildir.c in Sources */,
 				3CA70AF221BFC54200CB5A18 /* programm_manager.c in Sources */,
+				3CBFB4E221F252FC005906A9 /* main.c in Sources */,
 				3CB938F4216A07B400AA7A65 /* main.c in Sources */,
 				3C78F0FD21C1517B00D6ACDC /* smtp_fsm.c in Sources */,
+				3CBFB4E521F25337005906A9 /* test_smtp.c in Sources */,
 				3C99B18F21EB3C9E000ECCE5 /* Makefile in Sources */,
-				3C99B18921EA04E4000ECCE5 /* list.c in Sources */,
 				3C99B18C21EB3880000ECCE5 /* logging.c in Sources */,
 				3CB93906216ABD1F00AA7A65 /* read_message.c in Sources */,
 				3CB938FC216A0DE000AA7A65 /* message.c in Sources */,

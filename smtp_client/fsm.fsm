@@ -1,56 +1,33 @@
-# Define the enumeration and opaque struct types the state machine will use
-state-enum-type child_state
-event-enum-type child_event
-fsm-struct-type smtp_fsm
+#Define the enumeration and opaque struct types the state machine will use
+state - enum - type child_state event - enum - type child_event fsm - struct -
+    type smtp_fsm
 
-# Define the names of the exported API functions
-current-state-function smtp_fsm_current
-initialise-function smtp_fsm_init
-free-function smtp_fsm_free
-advance-function myfsm_advance
-state-enum-to-string-function smtp_fsm_state_ntop
-event-enum-to-string-function smtp_fsm_event_ntop
+#Define the names of the exported API functions
+        current -
+    state - function smtp_fsm_current initialise - function smtp_fsm_init free -
+    function smtp_fsm_free advance - function myfsm_advance state - enum - to -
+    string - function smtp_fsm_state_ntop event - enum - to - string -
+    function smtp_fsm_event_ntop
 
-# Define some states and events that trigger transitions between them
-state INIT
-	initial-state
-	on-event AAA -> EHLO_STATE
-state EHLO_STATE
-	on-event AAA -> EHLO_REC_STATE
-state EHLO_REC_STATE
-	on-event AAA -> READ_MES_STATE
-state READ_MES_STATE
-	on-event AAA -> MAIL_FROM_STATE
-	on-event BBB -> QUIT_STATE
-state QUIT_STATE
-    on-event AAA -> QUIT_REC_STATE
-state QUIT_REC_STATE
-    on-event AAA -> EHLO_STATE
-state MAIL_FROM_STATE
-    on-event AAA -> MAIL_FROM_STATE_REC
-state MAIL_FROM_STATE_REC
-    on-event AAA -> RCPT_TO_STATE
-    on-event BBB -> ERROR_STATE
-state RCPT_TO_STATE
-    on-event AAA -> RCPT_TO_STATE_REC
-state RCPT_TO_STATE_REC
-    on-event AAA -> DATA_STATE
-    on-event BBB -> ERROR_STATE
-state DATA_STATE
-    on-event AAA -> DATA_REC_STATE
-state DATA_REC_STATE
-    on-event AAA -> BODDY_STATE
-    on-event BBB -> ERROR_STATE
-state BODDY_STATE
-    on-event AAA -> BODDY_REC_STATE
-state BODDY_REC_STATE
-    on-event AAA -> READ_MES_STATE
-    on-event BBB -> ERROR_STATE
-state ERROR_STATE
-    on-event AAA -> RSET_STATE
-state RSET_STATE
-    on-event AAA -> RSET_REC_STATE
-state RSET_REC_STATE
-    on-event AAA-> MAIL_FROM_STATE
+#Define some states and events that trigger transitions between them
+        state INIT initial -
+    state on - event AAA->EHLO_STATE state EHLO_STATE on -
+    event AAA->EHLO_REC_STATE state EHLO_REC_STATE on -
+    event AAA->READ_MES_STATE state READ_MES_STATE on -
+    event AAA->MAIL_FROM_STATE on - event BBB->QUIT_STATE state QUIT_STATE on -
+    event AAA->QUIT_REC_STATE state QUIT_REC_STATE on -
+    event AAA->EHLO_STATE state MAIL_FROM_STATE on -
+    event AAA->MAIL_FROM_STATE_REC state MAIL_FROM_STATE_REC on -
+    event AAA->RCPT_TO_STATE on -
+    event BBB->ERROR_STATE state RCPT_TO_STATE on -
+    event AAA->RCPT_TO_STATE_REC state RCPT_TO_STATE_REC on -
+    event AAA->DATA_STATE on - event BBB->ERROR_STATE state DATA_STATE on -
+    event AAA->DATA_REC_STATE state DATA_REC_STATE on -
+    event AAA->BODDY_STATE on - event BBB->ERROR_STATE state BODDY_STATE on -
+    event AAA->BODDY_REC_STATE state BODDY_REC_STATE on -
+    event AAA->READ_MES_STATE on - event BBB->ERROR_STATE state ERROR_STATE on -
+    event AAA->RSET_STATE state RSET_STATE on -
+    event AAA->RSET_REC_STATE state RSET_REC_STATE on -
+    event AAA->MAIL_FROM_STATE
 
-# -------------------------------------------------------------------
+#-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -

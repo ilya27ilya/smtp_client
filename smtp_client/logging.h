@@ -9,18 +9,16 @@
 #ifndef logging_h
 #define logging_h
 
-
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
 #include <dirent.h>
 #include <mqueue.h>
-#include <unistd.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <stdarg.h>
-
+#include <time.h>
+#include <unistd.h>
 
 #define LOG_QUEUE_NAME "/logging_queue"
 #define LOG_SLEEP_MCS (100)
@@ -33,12 +31,9 @@
 #define LOG_NO_TAG ""
 #define LOG_TIME_SIZE 22
 
-
-
 int logging_loop(char *log_name);
 int save_log_mes(char *message, char *log_name);
 void write_log(char *tag, char *message, ...);
 void log_stop();
-
 
 #endif /* logging_h */

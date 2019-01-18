@@ -9,10 +9,10 @@
 #ifndef main_proc_h
 #define main_proc_h
 
+#include "logging.h"
 #include <stdio.h>
 #include <string.h>
-#include "logging.h"
 
-int send_message_to_proc(char* queue_name, char* file_name, char* domain);
+int send_message_to_proc(char *queue_name, char *file_name, char *domain);
 
 #endif /* main_proc_h */
