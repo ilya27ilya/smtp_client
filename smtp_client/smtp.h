@@ -21,11 +21,12 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "message.h"
 
 #define PORT 25
-#define DATA_BUFFER 1048
+#define DATA_BUFFER 1024*1024
 #define MY_NAME "course_work"
 
 #define EHLO "EHLO "
@@ -57,7 +58,7 @@
 #define SUCCESS_DATA_SEND_CODE 354
 #define SUCCESS_QUIT_CODE 221
 
-int send_command(int sock, child_state command_type, char *load);
+int send_command(int sock, child_state command_type, char *load, int *bytes);
 int create_socket(const char *host, int port, int attempts_number,
                   int attempts_delay, int *sock);
 int try_connect_to_socket(struct sockaddr_in server, int attempts_number,

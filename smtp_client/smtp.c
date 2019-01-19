@@ -8,44 +8,45 @@
 
 #include "smtp.h"
 
-int send_command(int sock, child_state command_type, char *load) {
+int send_command(int sock, child_state command_type, char *load, int *bytes) {
   char command[DATA_BUFFER];
   bzero(command, DATA_BUFFER);
 
   if (command_type == EHLO_STATE) {
     strncpy(command, EHLO, strlen(EHLO));
     strcat(command, load);
-    //printf("\nSend command EHLO");
+    printf("\nSend command EHLO");
   } else if (command_type == MAIL_FROM_STATE) {
     strncpy(command, MAIL_FROM, strlen(MAIL_FROM));
     strcat(command, OPEN_BRACKET);
     strcat(command, load);
     strcat(command, CLOSE_BRACKET);
-    //printf("Send command MAIL_FROM");
+    printf("Send command MAIL_FROM");
   } else if (command_type == RCPT_TO_STATE) {
     strncpy(command, RCPT_TO, strlen(RCPT_TO));
     strcat(command, OPEN_BRACKET);
     strcat(command, load);
     strcat(command, CLOSE_BRACKET);
-    //printf("Send command RCPT_TO");
+    printf("Send command RCPT_TO");
   } else if (command_type == DATA_STATE) {
     strncpy(command, DATA, strlen(DATA));
-    //printf("Send command DATA");
+    printf("Send command DATA");
   } else if (command_type == BODDY_STATE) {
     strncpy(command, load, strlen(load));
     strncat(command, DATA_END, strlen(DATA_END));
-    //printf("Send command BODY");
+    printf("Send command BODY");
   } else if (command_type == RSET_STATE) {
     strncpy(command, RSET, strlen(RSET));
-    //printf("Send command RSET");
+    printf("Send command RSET");
   } else if (command_type == QUIT_STATE) {
     strncpy(command, QUIT, strlen(QUIT));
-    //printf("Send command QUIT");
+    printf("Send command QUIT");
   }
 
   strcat(command, TERN);
   long a = write(sock, command, strlen(command));
-  //printf(" %lu  ", a);
+  (*bytes) = a;
+  printf(" %lu  ", a);
   return (a > 0) ? 1 : 0;
 }
 
@@ -112,7 +113,7 @@ long read_response(int sock) {
   read(sock, buffer, DATA_BUFFER);
   long result_code = strtol(buffer, NULL, 10);
   // printf("%s\n",buffer);
-  //printf("READ code %lu \n", result_code);
+  printf("READ code %lu \n", result_code);
 
   return ((result_code == SUCCESS_EHLO_CODE) ||
           (result_code == SUCCESS_OPERATION_CODE) ||

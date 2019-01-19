@@ -117,6 +117,7 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
           create_socket(get_mx(sock_connection[res].domain), PORT,
                         attempts_number, attempts_delay,
                         &sock_connection[res].sock_descr);
+          read_response(sock_connection[i].sock_descr);
           printf("Child proc sock creation [%d]\n",
                  sock_connection[res].sock_descr);
         }
@@ -180,9 +181,9 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
                 ((old_state == BODDY_REC_STATE) || (old_state == ERROR_STATE))) {
 
             ///printf("FREE message\n");
-              free_message(sock_connection[i].message);
+              //free_message(sock_connection[i].message);
               sock_connection[i].message = NULL;
-            //free_message(sock_connection[i].message);
+              //free_message(sock_connection[i].message);
               sock_connection[i].count_try = 0;
             }
 
@@ -217,26 +218,44 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
               if (smtp_fsm_res < 0)
                 goto bad_event;
             }
-
+              int bytes = 0;
             if (sock_connection[i].state == EHLO_STATE)
               a = send_command(sock_connection[i].sock_descr, EHLO_STATE,
-                               MY_NAME);
+                               MY_NAME, &bytes);
             if (sock_connection[i].state == MAIL_FROM_STATE)
               a = send_command(sock_connection[i].sock_descr, MAIL_FROM_STATE,
-                               sock_connection[i].message->envelope->sender);
+                               sock_connection[i].message->envelope->sender, &bytes);
             if (sock_connection[i].state == RCPT_TO_STATE)
               a = send_command(sock_connection[i].sock_descr, RCPT_TO_STATE,
-                               sock_connection[i].message->envelope->receiver);
+                               sock_connection[i].message->envelope->receiver, &bytes);
             if (sock_connection[i].state == DATA_STATE)
-              a = send_command(sock_connection[i].sock_descr, DATA_STATE, NULL);
-            if (sock_connection[i].state == BODDY_STATE)
-              a = send_command(sock_connection[i].sock_descr, BODDY_STATE,
-                               sock_connection[i].message->body);
+              a = send_command(sock_connection[i].sock_descr, DATA_STATE, NULL, &bytes);
+              if (sock_connection[i].state == BODDY_STATE) {
+                  char *tmp_body = sock_connection[i].message->body;
+                  char bf[BUFFER_SIZE];
+                  a = send_command(sock_connection[i].sock_descr, BODDY_STATE, tmp_body, &bytes);
+                  if (bytes > 0) {
+                      tmp_body += bytes;
+                      if(strlen(tmp_body) != 0){
+                          snprintf(bf, BUFFER_SIZE, "%s", tmp_body);
+                          snprintf(sock_connection[i].message->body, BUFFER_SIZE, "%s", bf);
+                          FD_SET(sock_connection[i].sock_descr, &write_fds);
+                          continue;
+                      }
+                  }
+                  else if (errno == EWOULDBLOCK) {
+                      FD_SET(sock_connection[i].sock_descr, &write_fds);
+                      continue;
+                  }
+                  else {
+                      a = -1;
+                  }
+              }
             if (sock_connection[i].state == RSET_STATE)
-              a = send_command(sock_connection[i].sock_descr, RSET_STATE, NULL);
+              a = send_command(sock_connection[i].sock_descr, RSET_STATE, NULL, &bytes);
 
             if (sock_connection[i].state == QUIT_STATE) {
-              a = send_command(sock_connection[i].sock_descr, QUIT_STATE, NULL);
+              a = send_command(sock_connection[i].sock_descr, QUIT_STATE, NULL, &bytes);
               memset(sock_connection[i].domain, 0,
                      sizeof(sock_connection[i].domain));
             }
@@ -254,7 +273,7 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
       } // select цикл по сокетам
     }   // end if
 
-    sleep(1);
+    //sleep(1);
   }
 
   free(child.child_data.domain);

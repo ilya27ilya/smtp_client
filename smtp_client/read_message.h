@@ -12,8 +12,8 @@
 #include "message.h"
 #include <stdio.h>
 
-#define BUFFER_SIZE 500
-#define BODY_SIZE 1000
+#define BUFFER_SIZE 1024*1024
+#define BODY_SIZE 1024*1024
 #define ENVELOPE_SIZE 500
 
 struct message *read_message(char *filename);

@@ -10,7 +10,8 @@ state - enum - type child_state event - enum - type child_event fsm - struct -
     function smtp_fsm_event_ntop
 
 #Define some states and events that trigger transitions between them
-        state INIT initial -
+        state INIT
+    initial -
     state on - event AAA->EHLO_STATE state EHLO_STATE on -
     event AAA->EHLO_REC_STATE state EHLO_REC_STATE on -
     event AAA->READ_MES_STATE state READ_MES_STATE on -
