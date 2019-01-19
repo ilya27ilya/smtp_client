@@ -30,6 +30,7 @@ int init_manager(input_struct input_data) {
     }
   }
   if (parent == 1) {
+    initSignalHandler();
     result = run_main_loop(input_data, pids);
   }
   return result;
@@ -39,6 +40,12 @@ int run_main_loop(input_struct input_data, int *proc) {
 
   long proc_number = input_data.max_proc_number;
   child_info child_array[proc_number];
+  
+  pids = malloc(proc_number*sizeof(int));
+  for(int i = 0; i<proc_number; i++){
+        pids[i] = proc[i];
+    }
+  proc_num = proc_number;
 
   for (int i = 0; i < proc_number; i++) {
     child_array[i].connection = 0;
@@ -66,7 +73,7 @@ int run_main_loop(input_struct input_data, int *proc) {
     struct file_list *mes_queue = NULL;
     mes_queue = get_name(input_data.new_dir, input_data.cur_dir);
     struct file_list *next = mes_queue;
-
+    
     if (mes_queue != NULL) {
       while (next != NULL) {
         write_log(INFO_LOG, "New message %s  -  %s", mes_queue->file_name,
@@ -134,3 +141,39 @@ void free_child_info_array(child_info *child_array, long proc_number) {
     free(child_array[i].domain);
   }
 }
+
+void signalHandler(int signum)
+{
+    
+    if (signum == SIGINT)
+    {
+        char mes[BUFFER_SIZE];
+        printf("\nCatch SIGINT\n");
+        
+        for(int i = 0; i<proc_num;i++){
+           strcpy(mes, "/");
+           strcat(mes, itoa(pids[i], 10));
+           send_message_to_proc(mes,"STOP","WORKING" );
+           memset(mes, 0, BUFFER_SIZE);
+           
+        }
+        write_log(ERROR_LOG, LOG_MSG_STOP);
+        free(pids);
+        int wait_status;
+        while (wait(&wait_status) > 0);
+        exit(EXIT_FAILURE);
+    }
+}
+
+int initSignalHandler()
+{
+    struct sigaction actions;
+    memset(&actions, 0, sizeof(actions));
+    actions.sa_handler = signalHandler;
+    
+    sigemptyset(&actions.sa_mask);
+    sigaddset(&actions.sa_mask, SIGINT);
+    sigaction(SIGINT, &actions, NULL);
+    return 0;
+}
+

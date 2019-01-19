@@ -22,14 +22,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/select.h>
+#include <signal.h>
 
 #define MAX_COUNT_DOMAIN 10
 #define MAX_DOMAIN_LIST_LEN 1024
+
+int *pids;
+int proc_num;
 
 int init_manager(input_struct input_data);
 int run_main_loop(input_struct input_data, int *proc);
 char *itoa(int val, int base);
 void free_child_info_array(child_info *child_array, long proc_number);
 int find_proc(child_info *child_array, char *domain, long proc_number);
+
+int initSignalHandler();
 
 #endif /* programm_manager_h */

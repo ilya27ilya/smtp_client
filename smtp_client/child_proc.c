@@ -66,6 +66,14 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
     memset(buffer, 0, sizeof(buffer));
 
     ssize_t bytes_read = mq_receive(mq, buffer, MAX_LOG_MES_SIZE, NULL);
+    
+    if (strcmp(buffer, "STOP WORKING ")==0) {
+        write_log(INFO_LOG, "GET STOP WORKING");
+        for (int i = 0; i <= maxfd; i++)
+            if (FD_ISSET(i, &read_fds) || FD_ISSET(i, &write_fds))
+                close(i);
+            return 0;
+      }
 
     struct file_list *mes_queue = NULL;
     mes_queue = (struct file_list *)malloc(sizeof(struct file_list));
