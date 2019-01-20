@@ -5,9 +5,28 @@
 //  Created by mam on 11.12.2018.
 //  Copyright © 2018 mam. All rights reserved.
 //
-
 #include "programm_manager.h"
+int exitcode = 1;
+void signalHandler_child(int signum)
+{
+    
+    if (signum == SIGINT)
+    {
+    }
+    
+}
 
+int initSignalHandler_c()
+{
+    struct sigaction actions;
+    memset(&actions, 0, sizeof(actions));
+    actions.sa_handler = signalHandler_child;
+    
+    sigemptyset(&actions.sa_mask);
+    sigaddset(&actions.sa_mask, SIGINT);
+    sigaction(SIGINT, &actions, NULL);
+    return 0;
+}
 int init_manager(input_struct input_data) {
 
   int result = 0;
@@ -15,14 +34,15 @@ int init_manager(input_struct input_data) {
   int pids[count];
   int parent = 1;
   int k;
-  write_log(INFO_LOG, "Create child proc");
+  write_log(0,INFO_LOG, "Create child proc");
   for (int i = 0; i < count; i++) {
     k = fork();
     if (k == 0) {
+        initSignalHandler_c();
       result = child_loop(
           i, input_data.attempt_number,
           input_data.attempt_number); //если передавать i то он будет для этого
-                                      //процесса и в менеджере
+                                        //процесса и в менеджере
       parent = 0;
       break;
     } else {
@@ -32,6 +52,8 @@ int init_manager(input_struct input_data) {
   if (parent == 1) {
     initSignalHandler();
     result = run_main_loop(input_data, pids);
+      printf("2222");
+      return 0;
   }
   return result;
 }
@@ -60,7 +82,7 @@ int run_main_loop(input_struct input_data, int *proc) {
   }
 
   for (int i = 0; i < proc_number; i++)
-    write_log(INFO_LOG, "Child proc: %d %d %d queue_name %s dom %s",
+    write_log(0,INFO_LOG, "Child proc: %d %d %d queue_name [%s] dom %s",
               child_array[i].pid, child_array[i].messenge_number,
               child_array[i].connection, child_array[i].queue_name,
               child_array[i].domain);
@@ -69,6 +91,10 @@ int run_main_loop(input_struct input_data, int *proc) {
 
   sleep(1);
   while (1) {
+      if(exitcode == 0){
+          printf("main proc end [%d]\n",getpid());
+          exit(0);
+      }
     // send_message_to_proc(child_array[1].queue_name, "22", "33");
     struct file_list *mes_queue = NULL;
     mes_queue = get_name(input_data.new_dir, input_data.cur_dir);
@@ -76,7 +102,7 @@ int run_main_loop(input_struct input_data, int *proc) {
     
     if (mes_queue != NULL) {
       while (next != NULL) {
-        write_log(INFO_LOG, "New message %s  -  %s", mes_queue->file_name,
+        write_log(0,INFO_LOG, "New message %s  -  %s", mes_queue->file_name,
                   mes_queue->domain);
         id = find_proc(child_array, mes_queue->domain, proc_number);
         int i = id / 10;
@@ -109,7 +135,7 @@ int find_proc(child_info *child_array, char *domain, long proc_number) {
   for (int i = 0; i < proc_number; i++) {
     istr = strstr(child_array[i].domain, domain);
     if (istr != NULL) {
-      write_log(INFO_LOG, "Domain alredy exist in proc %s",
+      write_log(0,INFO_LOG, "Domain alredy exist in proc %s",
                 child_array[i].queue_name);
       id = i;
       new_domain_flag = 0;
@@ -150,18 +176,25 @@ void signalHandler(int signum)
         char mes[BUFFER_SIZE];
         printf("\nCatch SIGINT\n");
         
+        //int wait_status;
         for(int i = 0; i<proc_num;i++){
-           strcpy(mes, "/");
-           strcat(mes, itoa(pids[i], 10));
+//           strcpy(mes, "/");
+//           strcat(mes, itoa(pids[i], 10));
+            snprintf(mes, BUFFER_SIZE, "/%d", pids[i]);
+            printf("[%s]\n",mes);
            send_message_to_proc(mes,"STOP","WORKING" );
            memset(mes, 0, BUFFER_SIZE);
+           //write_log(0,INFO_LOG, "Closing proc [%d]",pids[i]);
+           printf("Closing proc [%d]\n",pids[i]);
+           write_log(100,INFO_LOG, "Closing proc [%d]\n",pids[i]);
            
         }
-        write_log(ERROR_LOG, LOG_MSG_STOP);
+        write_log(100,INFO_LOG, "Closing log");
+        write_log(100,ERROR_LOG, LOG_MSG_STOP);
         free(pids);
-        int wait_status;
-        while (wait(&wait_status) > 0);
-        exit(EXIT_FAILURE);
+        
+        //while (wait(&wait_status) > 0);
+        exitcode = 0;
     }
 }
 

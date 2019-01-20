@@ -75,8 +75,7 @@ int main(int argc, const char *argv[]) {
   if (!result) {
     // print_config(input_data);
     result = run(input_data);
-    return result;
   }
-
+  printf("end of ch [%d]",getpid());
   return result;
 }

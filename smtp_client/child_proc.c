@@ -9,7 +9,7 @@
 #include "child_proc.h"
 
 int child_loop(int i, int attempts_number, int attempts_delay) {
-  write_log(INFO_LOG, "Start child proc %d", i);
+  write_log(0,INFO_LOG, "Start child proc %d", i);
 
   child_struct child;
   child.child_id = i;
@@ -46,11 +46,11 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
                      O_CREAT | O_RDONLY | O_NONBLOCK, 0644, &attr);
 
   if (mq == -1) {
-    write_log(ERROR_LOG, " Cant Create Mq %d with name [%s]", mq,
+    write_log(0,ERROR_LOG, " Cant Create Mq %d with name [%s]", mq,
               child.child_data.queue_name);
     return -1;
   }
-  write_log(INFO_LOG, "Create Mq %d with name [%s]", mq,
+  write_log(0,INFO_LOG, "Create Mq %d with name [%s]", mq,
             child.child_data.queue_name);
 
   fd_set read_fds;
@@ -66,13 +66,16 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
     memset(buffer, 0, sizeof(buffer));
 
     ssize_t bytes_read = mq_receive(mq, buffer, MAX_LOG_MES_SIZE, NULL);
-    
-    if (strcmp(buffer, "STOP WORKING ")==0) {
-        write_log(INFO_LOG, "GET STOP WORKING");
-        for (int i = 0; i <= maxfd; i++)
+      
+      if(bytes_read>0)
+          printf("[%s]\n",buffer);
+      if (strstr(buffer, "STOP")) {
+        for (int i = 0; i <= maxfd; i++){
             if (FD_ISSET(i, &read_fds) || FD_ISSET(i, &write_fds))
                 close(i);
-            return 0;
+            }
+          printf("end of child [%d]\n",getpid());
+          return 0;
       }
 
     struct file_list *mes_queue = NULL;
@@ -84,7 +87,7 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
       //прочитали сообщение
       memset(mes_queue->domain, 0, sizeof(mes_queue->domain));
       memset(mes_queue->file_name, 0, sizeof(mes_queue->file_name));
-      write_log(INFO_LOG, "Get mess adr: [%s] domain: [%s]",
+      write_log(0,INFO_LOG, "Get mess adr: [%s] domain: [%s]",
                 mes_queue->file_name, mes_queue->domain);
 
       char *istr = NULL;
@@ -92,7 +95,7 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
       strcat(mes_queue->file_name, istr);
       istr = strtok(NULL, " ");
       strcat(mes_queue->domain, istr);
-      write_log(INFO_LOG, "Get mess adr: [%s] domain: [%s]",
+      write_log(0,INFO_LOG, "Get mess adr: [%s] domain: [%s]",
                 mes_queue->file_name, mes_queue->domain);
 
       //если в списке доменов нет полученого, то добавили
@@ -115,7 +118,7 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
 
         //если уже все заняты, то ошибка и выход
         if (child.child_data.connection == MAX_COUNT_DOMAIN) {
-          write_log(ERROR_LOG, "There is no empty domain");
+          write_log(0,ERROR_LOG, "There is no empty domain");
           goto bad_event;
         }
 
@@ -131,7 +134,7 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
         }
 
         if (sock_connection[res].sock_descr <= 0) {
-          write_log(ERROR_LOG, "Cant create connection to domain: [%s]",
+          write_log(0,ERROR_LOG, "Cant create connection to domain: [%s]",
                     sock_connection[res].domain);
           memset(sock_connection[res].domain, 0,
                  sizeof(sock_connection[res].domain));
@@ -149,7 +152,7 @@ int child_loop(int i, int attempts_number, int attempts_delay) {
       strcat(sock_connection[res].message_list, mes_queue->file_name);
       strcat(sock_connection[res].message_list, "@");
 
-      write_log(INFO_LOG, "Add mess to sock [%d]  mess_list: [%s] domain: [%s]",
+      write_log(0,INFO_LOG, "Add mess to sock [%d]  mess_list: [%s] domain: [%s]",
                 sock_connection[res].sock_descr,
                 sock_connection[res].message_list, sock_connection[res].domain);
 
@@ -303,7 +306,7 @@ int resv_mes_main(char *queue_name, char *buffer) {
 
   if (mq == -1) {
     mq = mq_open(queue_name, O_RDONLY);
-    write_log(INFO_LOG, "Mq %d pid %d", mq, getpid());
+    write_log(0,INFO_LOG, "Mq %d pid %d", mq, getpid());
   }
   if (mq) {
     ssize_t bytes_read = mq_receive(mq, buffer, MAX_LOG_MES_SIZE, NULL);

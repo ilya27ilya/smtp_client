@@ -29,6 +29,7 @@
 
 int *pids;
 int proc_num;
+extern int exitcode;
 
 int init_manager(input_struct input_data);
 int run_main_loop(input_struct input_data, int *proc);

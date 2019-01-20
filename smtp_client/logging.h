@@ -33,7 +33,7 @@
 
 int logging_loop(char *log_name);
 int save_log_mes(char *message, char *log_name);
-void write_log(char *tag, char *message, ...);
+void write_log(int priority,char *tag, char *message, ...);
 void log_stop();
 
 #endif /* logging_h */

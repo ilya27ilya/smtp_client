@@ -28,9 +28,12 @@ int logging_loop(char *log_name) {
     while (!logging_stop) {
       char buffer[MAX_LOG_MES_SIZE + 1];
       memset(buffer, 0, sizeof(buffer));
+        //unsigned int assss = ;
       ssize_t bytes_read = mq_receive(mq, buffer, MAX_LOG_MES_SIZE, NULL);
-
-      if (!strcmp(buffer, LOG_MSG_STOP)) {
+      
+      if ((strstr(buffer, LOG_MSG_STOP))&&(bytes_read>0)) {
+        printf("Closing logging process\n");
+        save_log_mes(buffer, log_name);
         logging_stop = 1;
       } else if (bytes_read > 0) {
         // fprintf(stdout, "%s\n", buffer);
@@ -42,7 +45,11 @@ int logging_loop(char *log_name) {
     mq_close(mq);
     mq_unlink(LOG_QUEUE_NAME);
   }
-
+//int a = 0;
+    printf("return from logs [%d]\n\n", getpid());
+    printf("\n");
+    exit(0);
+    
   return 0;
 }
 
@@ -82,7 +89,7 @@ int save_log_mes(char *message, char *log_name) {
   return 0;
 }
 
-void write_log(char *tag, char *message, ...) {
+void write_log(int priority, char *tag, char *message, ...) {
   static mqd_t mq = -1;
   static int log_stop = 0;
 
@@ -106,15 +113,14 @@ void write_log(char *tag, char *message, ...) {
     else
       snprintf(buffer, sizeof(buffer), "%s", message);
 
-    mq_send(mq, buffer, MAX_LOG_MES_SIZE, 0);
+    mq_send(mq, buffer, MAX_LOG_MES_SIZE, priority);
 
     if (!strcmp(LOG_MSG_STOP, message)) {
-      int wait_status = 0;
-      wait(&wait_status);
+
       log_stop = 1;
       mq_close(mq);
     }
   }
 }
 
-void log_stop() { write_log(LOG_NO_TAG, LOG_MSG_STOP); }
+void log_stop() { write_log(0,LOG_NO_TAG, LOG_MSG_STOP); }
